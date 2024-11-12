@@ -1,0 +1,95 @@
+@font-face {
+    font-family: "__sriracha_pwks_club";
+    src: url("../fonts/Sriracha-Regular.ttf");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  body {
+    background: #006699 url("~/assets/image/wall3.jpg") no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  
+  .bg-admin {
+    background-image: url("~/assets/image/wall3.jpg");
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  
+  .sriracha-font {
+    font-family: "__sriracha_pwks_club";
+    font-weight: 500;
+  }
+  
+  .stroke {
+    text-shadow: -1px -1px 0 #134d30, 1px -1px 0 #134d30, -1px 1px 0 #134d30,
+      1px 1px 0 #134d30;
+  }
+  
+  .text-white {
+    color: white;
+  }
+  
+  .bgbox2 {
+    background-color: #fff;
+    padding: 20px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    margin: 10px;
+  }
+  
+  .bgbox4 {
+    padding: 5px 20px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    margin: 10px;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .thead-bg {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+    border-color: #dee2e6 !important;
+    min-width: 120px;
+  }
+  
+  .icon-status {
+    padding: 0 0;
+    margin: 0 0;
+    font-size: 1rem;
+  }
+  
+  .p-link-target {
+    color: #007bff;
+    cursor: pointer;
+    margin: unset;
+  }
+  
+  .f-w-500 {
+    font-weight: 600;
+  }
+  
+  .row-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sriracha-font {
+    margin: 0;
+  }
+  .fm-kanit {
+    display: inline-flex;
+    align-items: center;
+  }
+  
