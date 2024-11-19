@@ -92,4 +92,20 @@ export default {
     getListClubAdminRegis: () => {
         return axios.api.get('/club/get-list-club').then(response => response.data);
     },
+
+    gettypeBehaviorStudent: () => {
+        return axios.api.get('/behavior/get-type-behavior').then(response => response.data);
+    },
+
+    getScoreBehaviorStudent: () => {
+        return axios.api.get('/behavior/get-score-behavior').then(response => response.data);
+    },
+
+    getStudentForBehaviorScore: data => {
+        return axios.api.post('/behavior/get-student-for-behavior', data).then(response => response.data);
+    },
+
+    deductBehaviorScore: data=> {
+        return axios.api.post('/behavior/get-deduction-score-behavior', data).then(response => response.data);
+    }
 }

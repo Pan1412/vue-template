@@ -34,7 +34,7 @@ export default {
 
     data() {
         return {
-            titleWeb: 'PWKSs CLUB',
+            titleWeb: 'PWKSs BEHAVIOR-SCORE',
             footerWeb: '',
             checkLogin: false,
             checkPrint: false,
@@ -64,21 +64,13 @@ export default {
             await this.getInfoUser(username, roll)
         }
 
-        if(this.getStore().setAuth()){
-            console.log("asdasd");
-            
-            if (this.getStore().setAuth().roll == 'teacher') {
+        if (this.getStore().setAuth()) {
+            if (this.getStore().setAuth().roll == 'student') {
+                this.title = 'ระบบคะเเนนความประพฤติ'
+                this.subTitle = 'ตรวจสอบคะเเนนความประพฤติ'
+            } else if (this.getStore().setAuth().roll == 'teacher') {
                 this.title = 'ระบบจัดการข้อมูลสำหรับครู'
-                this.subTitle = 'รายวิชาเพิ่มเติมและกิจกรรมชุมนุม'
-
-            } else if (this.getStore().setAuth().roll == 'admin') {
-                this.title = 'ระบบกิจกรรมชุมนุม'
-                this.subTitle = 'สำหรับผู้ดูแลระบบ'
-                this.rollCheck = this.getStore().setAuth().roll
-
-            } else if (this.getStore().setAuth().roll == 'student') {
-                this.title = 'ระบบลงทะเบียน'
-                this.subTitle = 'รายวิชาเพิ่มเติมและกิจกรรมชุมนุม'
+                this.subTitle = 'จัดการคะเเนนความประพฤติ'
             }
         }
 
@@ -88,16 +80,16 @@ export default {
         async getInfoUser(username, roll) {
             await callApi.getInfoClubUser({ username, roll }).then(res => {
                 if (res.code == 0) {
-                    let sortObj = {...res.result}
+                    let sortObj = { ...res.result }
                     sortObj.roll = roll
                     this.getStore().setAuth(sortObj)
 
                     if (roll == 'student') {
-                        window.location.href = this.$config.public.baseURL+'student/main'
+                        window.location.href = this.$config.public.baseURL + 'student/main'
                     } else if (roll == 'teacher') {
-                        window.location.href = this.$config.public.baseURL+'teacher/main'
+                        window.location.href = this.$config.public.baseURL + 'teacher/main'
                     } else if (roll == 'admin') {
-                        window.location.href = this.$config.public.baseURL+'admin/'
+                        window.location.href = this.$config.public.baseURL + 'admin/'
                     }
                 } else {
                     alert('ไม่พบผู้ใช้งาน กรุณาเข้าสู่ระบบ')

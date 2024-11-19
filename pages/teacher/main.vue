@@ -4,7 +4,7 @@
             <div class="col bgbox2">
 
                 <div align="left">
-                    <button class="btn btn-danger btn-sm" @click="gotoPage('/teacher/main')">
+                    <button class="btn btn-danger btn-sm" @click="gotoPage('')">
                         <Icon name="ep:refresh-left" style="padding: 0 0; margin: 0 0; font-size: 1rem;"
                             class="fm-kanit" />
                         กลับหน้าก่อน
@@ -33,10 +33,10 @@
                             <option :value="room" v-for=" room in roomList">{{ room }}</option>
                         </select>
 
-                        <input v-model="nameSearch" type="text" class="form-control input-width-student ms-3 w-50"
-                            placeholder="กรอกชื่อนักเรียน" aria-label="Username" aria-describedby="basic-addon1">
+                        <!-- <input v-model="nameSearch" type="text" class="form-control input-width-student ms-3 w-50"
+                            placeholder="กรอกชื่อนักเรียน" aria-label="Username" aria-describedby="basic-addon1"> -->
 
-                        <button class="btn btn-primary btn-sm ms-3 w-50" @click="searchStudent">
+                        <button class="btn btn-primary btn-sm ms-3 w-50 fm-kanit" @click="searchStudent">
                             ค้นหา
                         </button>
                     </div>
@@ -51,37 +51,40 @@
                                     <th class="thead-bg" style="text-align: left;">ชื่อ-นามสกุล</th>
                                     <th class="thead-bg">ห้องเรียน</th>
                                     <th class="thead-bg">เลขที่</th>
+                                    <th class="thead-bg">คะเเนนความประพฤติ</th>
                                     <th class="thead-bg"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(student, index) in students" :key="index">
-                                    <td>{{ index + 1 }}</td>
-                                    <td>{{ student.prefix_stu }}{{ student.name_stu }} {{ student.surname_stu }}</td>
+                                <tr v-if="listStudent.length > 0" v-for="list in listStudent">
+                                    <td>{{ list.id_school }}</td>
+                                    <td>{{ list.prefix_stu }}{{ list.name_stu }} {{ list.surname_stu }}</td>
                                     <td>
-                                        <label v-if="student.class == 'vc'">ปวช.{{ student.room }}</label>
-                                        <label v-else>ม.{{ student.class }}/{{ student.room }}</label>
+                                        <label v-if="list.class == 'vc'">ปวช.{{ list.room }}</label>
+                                        <label v-else>ม.{{ list.class }}/{{ list.room }}</label>
                                     </td>
-                                    <td>{{ student.student_num }}</td>
+                                    <td>{{ list.student_num }}</td>
+                                    <td>{{ list.score }}</td>
                                     <td>
-                                        <select class="form-select form-select-sm w-100">
+                                        <select class="form-select form-select-sm w-100"
+                                            v-model="list.selectedBehavior">
                                             <option value="" disabled selected>เลือกการหักคะแนน</option>
-                                            <option value="มาสาย">มาสาย</option>
-                                            <option value="ไม่ส่งงาน">ไม่ส่งงาน</option>
-                                            <option value="ทะเลาะวิวาท">ทะเลาะวิวาท</option>
-                                            <option value="ขาดเรียน">ขาดเรียน</option>
-                                            <option value="ใช้วาจาไม่สุภาพ">ใช้วาจาไม่สุภาพ</option>
+                                            <option v-for="item in listTypeBehaviour" :key="item.id" :value="item">
+                                                {{ item.name_beh }}
+                                            </option>
                                         </select>
                                     </td>
+                                </tr>
+                                <tr v-if="listStudent.length == 0" align="center">
+                                    <td colspan="6">ไม่พบข้อมูล</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="text-center mt-3">
-                    <button type="button" class="btn btn-success" data-bs-toggle="popover" data-bs-trigger="focus"
-                        title="ผลการบันทึก" data-bs-content="ทำการบันทึกเรียบร้อย" @click="showPopover">
+                <div v-if="listStudent.length > 0" class="text-center mt-3">
+                    <button type="button" class="btn btn-success" @click="deductScore">
                         บันทึกการหักคะแนน
                     </button>
                 </div>
@@ -111,19 +114,9 @@ export default {
             },
 
             listStudent: [],
+            listTypeBehaviour: [],
+            selectedBehavior: [],
             tId: 22,
-            students: [
-                { id_school: 1, prefix_stu: 'นาย', name_stu: 'สมชาย', surname_stu: 'ใจดี', class: '1', room: '1', student_num: '10', act_name: '' },
-                { id_school: 2, prefix_stu: 'นางสาว', name_stu: 'สุดา', surname_stu: 'มีสุข', class: '2', room: '2', student_num: '12', act_name: 'วาดภาพ' },
-                { id_school: 3, prefix_stu: 'นาย', name_stu: 'ณรงค์', surname_stu: 'กล้าหาญ', class: '3', room: '3', student_num: '15', act_name: 'ฟุตบอล' },
-                { id_school: 4, prefix_stu: 'นางสาว', name_stu: 'ชลลดา', surname_stu: 'สดใส', class: '4', room: '1', student_num: '8', act_name: 'ร้องเพลง' },
-                { id_school: 5, prefix_stu: 'นาย', name_stu: 'ศักดิ์', surname_stu: 'พัฒน์ดี', class: '5', room: '2', student_num: '20', act_name: '' },
-                { id_school: 6, prefix_stu: 'นางสาว', name_stu: 'พิมพ์', surname_stu: 'สวยงาม', class: '6', room: '1', student_num: '2', act_name: 'ดนตรี' },
-                { id_school: 7, prefix_stu: 'นาย', name_stu: 'เอกชัย', surname_stu: 'อัศวิน', class: 'vc', room: '1', student_num: '5', act_name: 'การถ่ายภาพ' },
-                { id_school: 8, prefix_stu: 'นางสาว', name_stu: 'สุนิสา', surname_stu: 'แก้วมณี', class: '1', room: '3', student_num: '22', act_name: '' },
-                { id_school: 9, prefix_stu: 'นาย', name_stu: 'เก่ง', surname_stu: 'ดวงดี', class: '2', room: '1', student_num: '11', act_name: 'ฟุตซอล' },
-                { id_school: 10, prefix_stu: 'นางสาว', name_stu: 'ดารา', surname_stu: 'เพชรแท้', class: '3', room: '2', student_num: '9', act_name: '' }
-            ]
         }
     },
 
@@ -133,6 +126,8 @@ export default {
         if (auth) {
             this.tId = auth.id
         }
+
+        this.getDaTaTypeBehaviour()
     },
 
     methods: {
@@ -146,21 +141,111 @@ export default {
             }
         },
 
+        // handleBehaviorSelection(event) {
+        //     const selected = event.target.value;
+        //     if (selected) {
+        //         this.selectedBehavior.push(JSON.parse(selected));
+        //         console.log(this.selectedBehavior);
+        //     }
+        //     console.log("handleBehaviorSelection",selected);
+        // },
+
         async searchStudent() {
-            if (this.classSearch == '' && this.roomSearch == '' && this.nameSearch == '') {
-                return
+            if (this.classSearch === '' || this.roomSearch === '') {
+                alert('กรุณาระบุระดับชั้นและห้องให้ครบถ้วน');
+                return;
             }
 
-            this.dataSearch.class = this.classSearch
-            this.dataSearch.room = this.roomSearch
-            this.dataSearch.name = this.nameSearch
-            this.dataSearch.tId = this.tId
+            this.dataSearch.class = this.classSearch;
+            this.dataSearch.room = this.roomSearch;
+            this.dataSearch.name = this.nameSearch;
+            this.dataSearch.tId = this.tId;
 
-            await callApi.getStudentForRegis({ ...this.dataSearch }).then(res => {
-                this.listStudent = res.result
+            await callApi.getStudentForBehaviorScore({ ...this.dataSearch })
+                .then(res => {
+                    this.listStudent = res.result.map(student => ({
+                        ...student,
+                        selectedBehavior: ''
+                    }));
+                    console.log(this.listStudent);
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                });
+        },
+
+        async getDaTaTypeBehaviour() {
+            await callApi.gettypeBehaviorStudent().then(res => {
+                if (res.code == 0) {
+                    this.listTypeBehaviour = res.result
+                    console.log(this.listTypeBehaviour)
+                } else {
+                    this.listTypeBehaviour = res.result
+                    console.log(this.listTypeBehaviour)
+                }
             }).catch(err => {
-
+                console.log(err);
             })
+        },
+
+        async deductScore() {
+            const deductionRequests = [];
+
+            this.listStudent.forEach(student => {
+                if (student.selectedBehavior) {
+                    const selectedBehavior = student.selectedBehavior;
+                    console.log(selectedBehavior);
+
+                    const scoreStudent = student.score;
+                    console.log(scoreStudent);
+
+                    const scoreToDeduct = selectedBehavior.score;
+                    console.log(scoreToDeduct);
+
+                    const typeBehId = selectedBehavior.id;
+                    console.log(typeBehId);
+
+                    const checkScoreBehavior = scoreStudent + scoreToDeduct
+                    console.log(checkScoreBehavior);
+
+                    const requestData = {
+                        id_school: student.id_school,
+                        // scoreToDeduct: checkScoreBehavior,
+                        type_beh_id: typeBehId
+                    };
+
+                    console.log(requestData);
+
+                    deductionRequests.push(requestData);
+                }
+            });
+
+            if (deductionRequests.length === 0) {
+                alert('กรุณาเลือกการหักคะแนนอย่างน้อยหนึ่งรายการ');
+                return;
+            }
+
+            try {
+                await callApi.deductBehaviorScore(deductionRequests).then((res) => {
+                    console.log(res);
+                    if (res.code == 0) {
+                        setTimeout(() => {
+                            this.alertModal('success', 'สำเร็จ', 'บันทึกสำเร็จ', true)
+                            this.searchStudent();
+                        }, 500);
+                    } else {
+                        setTimeout(() => {
+                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถบันทึกได้')
+                        }, 500);
+                    }
+                });
+                // alert('บันทึกการหักคะแนนสำเร็จ');
+                
+            } catch (error) {
+                console.error('Error deducting score:', error);
+                alert('เกิดข้อผิดพลาดในการบันทึก');
+                // window.location.reload();
+            }
         },
 
         async regisClubTeacher(list) {

@@ -15,11 +15,11 @@
                     </div>
                 </div>
 
-                <label style="padding-top: 2rem; padding-bottom: 2rem;">นาย A นามสกุล B</label>
+                <label style="padding-top: 1rem; padding-bottom: 0.5rem;">{{ fullName }}</label>
 
                 <div class="content-sections mt-3">
                     <div class="left-section">
-                        <span class="large-number">100</span>
+                        <span class="large-number">{{ score }}</span>
                     </div>
                     <div class="right-section">
                         <table class="table table-hover">
@@ -31,41 +31,47 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td><b>มาสาย</b></td>
-                                    <td>
-                                        <p class="p-link-target">-5</p>
-                                    </td>
+                                <tr v-if="score === 100">
+                                    <td colspan="3" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td><b>ไม่ส่งการบ้าน</b></td>
-                                    <td>
-                                        <p class="p-link-target">-3</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td><b>ไม่แต่งเครื่องแบบ</b></td>
-                                    <td>
-                                        <p class="p-link-target">-2</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td><b>ทะเลาะวิวาท</b></td>
-                                    <td>
-                                        <p class="p-link-target">-10</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td><b>ใช้มือถือในห้องเรียน</b></td>
-                                    <td>
-                                        <p class="p-link-target">-4</p>
-                                    </td>
-                                </tr>
+                                <!-- Otherwise, display the normal table data -->
+                                <template v-else>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><b>มาสาย</b></td>
+                                        <td>
+                                            <p class="p-link-target">-5</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td><b>ไม่ส่งการบ้าน</b></td>
+                                        <td>
+                                            <p class="p-link-target">-3</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td><b>ไม่แต่งเครื่องแบบ</b></td>
+                                        <td>
+                                            <p class="p-link-target">-2</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td><b>ทะเลาะวิวาท</b></td>
+                                        <td>
+                                            <p class="p-link-target">-10</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td><b>ใช้มือถือในห้องเรียน</b></td>
+                                        <td>
+                                            <p class="p-link-target">-4</p>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
@@ -88,23 +94,27 @@ export default {
             openClub: 0,
             fullName: '',
             term: '',
-            year: ''
+            year: '',
+            score: '',
         }
     },
 
     async mounted() {
         let auth = this.getStore().setAuth()
+        console.log(auth);
 
         if (auth) {
             this.studentId = auth.id_school
             let classCheck = auth.class == 'vc' ? `ระดับชั้นปประกาศนียบัตรวิชาชีพชั้นปีที่ ${auth.room}` : `ระดับชั้นมัธยมศึกษาปีที่ ${auth.class} ห้อง ${auth.room}`
             this.fullName = `ของ ${auth.prefix_stu}${auth.name_stu} ${auth.surname_stu} ${classCheck}`
+            this.score = auth.score
         }
 
         await this.getOpen()
         await this.getClubRegisted()
         await this.getOsjRegisted()
         await this.getOpenClub()
+        await this.geScoreBehaviourStudent()
     },
 
     methods: {
@@ -135,6 +145,18 @@ export default {
                 if (res.code == 0) {
                     this.term = res.setting.term
                     this.year = res.setting.year
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+
+        async geScoreBehaviourStudent() {
+            await callApi.getScoreBehaviorStudent().then(res => {
+                if (res.code == 0) {
+                    console.log(res)
+                } else {
+                    console.log(res)
                 }
             }).catch(err => {
                 console.log(err);
