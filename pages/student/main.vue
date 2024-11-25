@@ -34,7 +34,6 @@
                                 <tr v-if="score === 100">
                                     <td colspan="3" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
                                 </tr>
-                                <!-- Otherwise, display the normal table data -->
                                 <template v-else>
                                     <tr>
                                         <td>1</td>

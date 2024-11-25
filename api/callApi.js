@@ -107,5 +107,9 @@ export default {
 
     deductBehaviorScore: data=> {
         return axios.api.post('/behavior/get-deduction-score-behavior', data).then(response => response.data);
+    },
+
+    getDetailsBehaviorScore: data=> {
+        return axios.api.post('/behavior/get-details-score-behavior', data).then(response => response.data);
     }
 }

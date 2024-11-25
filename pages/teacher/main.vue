@@ -141,15 +141,6 @@ export default {
             }
         },
 
-        // handleBehaviorSelection(event) {
-        //     const selected = event.target.value;
-        //     if (selected) {
-        //         this.selectedBehavior.push(JSON.parse(selected));
-        //         console.log(this.selectedBehavior);
-        //     }
-        //     console.log("handleBehaviorSelection",selected);
-        // },
-
         async searchStudent() {
             if (this.classSearch === '' || this.roomSearch === '') {
                 alert('กรุณาระบุระดับชั้นและห้องให้ครบถ้วน');
@@ -194,28 +185,10 @@ export default {
             this.listStudent.forEach(student => {
                 if (student.selectedBehavior) {
                     const selectedBehavior = student.selectedBehavior;
-                    console.log(selectedBehavior);
-
-                    const scoreStudent = student.score;
-                    console.log(scoreStudent);
-
-                    const scoreToDeduct = selectedBehavior.score;
-                    console.log(scoreToDeduct);
-
-                    const typeBehId = selectedBehavior.id;
-                    console.log(typeBehId);
-
-                    const checkScoreBehavior = scoreStudent + scoreToDeduct
-                    console.log(checkScoreBehavior);
-
                     const requestData = {
                         id_school: student.id_school,
-                        // scoreToDeduct: checkScoreBehavior,
-                        type_beh_id: typeBehId
+                        type_beh_id: selectedBehavior.id
                     };
-
-                    console.log(requestData);
-
                     deductionRequests.push(requestData);
                 }
             });
@@ -227,24 +200,34 @@ export default {
 
             try {
                 await callApi.deductBehaviorScore(deductionRequests).then((res) => {
-                    console.log(res);
-                    if (res.code == 0) {
-                        setTimeout(() => {
-                            this.alertModal('success', 'สำเร็จ', 'บันทึกสำเร็จ', true)
-                            this.searchStudent();
-                        }, 500);
+                    if (res.code === 0) {
+                        deductionRequests.forEach((request) => {
+                            const studentToUpdate = this.listStudent.find(student => student.id_school === request.id_school);
+                            if (studentToUpdate && studentToUpdate.selectedBehavior) {
+                                const scoreToDeduct = studentToUpdate.selectedBehavior.score;
+                                studentToUpdate.score -= scoreToDeduct;
+                            }
+                        });
+
+                        try {
+                            callApi.getDetailsBehaviorScore(deductionRequests);
+                        } catch (error) {
+                            console.error('Error getDetailsBehaviorScore:', error);
+                            alert('เกิดข้อผิดพลาดในการบันทึกข้อมูลการหักคะแนน');
+                        }
+
+                        // setTimeout(() => {
+                        //     this.alertModal('success', 'สำเร็จ', 'ทำการหักคะเเนนสำเร็จ', true);
+                        // }, 500);
                     } else {
                         setTimeout(() => {
-                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถบันทึกได้')
+                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถหักคะเเนนได้');
                         }, 500);
                     }
                 });
-                // alert('บันทึกการหักคะแนนสำเร็จ');
-                
             } catch (error) {
                 console.error('Error deducting score:', error);
                 alert('เกิดข้อผิดพลาดในการบันทึก');
-                // window.location.reload();
             }
         },
 
