@@ -2,49 +2,45 @@
     <div>
         <div class="row">
             <div class="col bgbox2">
-                <div>
-                    <div class="row-container">
-                        <h2 class="sriracha-font">คะเเนนความประพฤติ</h2>
-                        <div>
-                            <button class="btn btn-success" @click="logout()">
-                                <Icon name="bi:door-open" style="padding: 0 0; margin: 0 0; font-size: 1.5rem;"
-                                    class="fm-kanit" />
-                                ย้อนกลับ
-                            </button>
+                <div class="header_text_l">
+                    <h2 class="sriracha-font">รายงานคะแนน</h2>
+                </div>
+                <label class="fm-kanit">{{ fullName }}</label>
+
+                <div class="row mt-2">
+                    <div class="col-md-5 fm-kanit">
+                        <div class="score_board" align="center">
+                            {{ score }}
                         </div>
                     </div>
-                </div>
-
-                <label style="padding-top: 1rem; padding-bottom: 0.5rem;">{{ fullName }}</label>
-
-                <div class="content-sections mt-3">
-                    <div class="left-section">
-                        <span class="large-number">{{ score }}</span>
-                    </div>
-                    <div class="right-section">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="thead-bg" style="width: 3rem;">#</th>
-                                    <th class="thead-bg">รายการ</th>
-                                    <th class="thead-bg">คะแนน</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-if="score === 100">
-                                    <td colspan="3" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
-                                </tr>
-                                <template v-else>
-                                    <tr v-for="(behavior, index) in behaviorDetails" :key="index">
-                                        <td>{{ index + 1 }}</td>
-                                        <td><b>{{ behavior.name_beh }}</b></td>
-                                        <td>
-                                            <p class="p-link-target">{{ behavior.score }}</p>
+                    <div class="col-md-7">
+                        <div class="table-responsive fm-IBM">
+                            <table class="table table-striped table-hover mt-3">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">รายการ</th>
+                                        <th scope="col">วันที่</th>
+                                        <th scope="col">คะแนน</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="score === 100">
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ
                                         </td>
                                     </tr>
-                                </template>
-                            </tbody>
-                        </table>
+                                    <template v-else>
+                                        <tr v-for="(behavior, index) in behaviorDetails" :key="index">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><b>{{ behavior.name_beh }}</b></td>
+                                            <td>
+                                                <p class="p-link-target">{{ behavior.score }}</p>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
@@ -120,6 +116,7 @@ export default {
 .content-sections {
     display: flex;
     margin-top: 1rem;
+
     .left-section {
         flex: 0 0 50%;
         display: flex;
