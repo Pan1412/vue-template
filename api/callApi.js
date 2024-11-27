@@ -105,11 +105,19 @@ export default {
         return axios.api.post('/behavior/get-student-for-behavior', data).then(response => response.data);
     },
 
-    deductBehaviorScore: data=> {
+    deductBehaviorScore: data => {
         return axios.api.post('/behavior/get-deduction-score-behavior', data).then(response => response.data);
     },
 
-    getDetailsBehaviorScore: data=> {
+    insertDetailsTypeBehaviorScore: data => {
         return axios.api.post('/behavior/get-details-score-behavior', data).then(response => response.data);
-    }
+    },
+
+    getScoreBehaviorOneStudent: (data) => {
+        return axios.api.post('/behavior/get-score-one-student', data).then(response => response.data);
+    },
+
+    getTypeDetailBehaviorStudent: (data) => {
+        return axios.api.post('/behavior/get-type-behavior-one-student', data).then(response => response.data);
+    },
 }

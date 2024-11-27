@@ -7,7 +7,7 @@ const optionsState = {
 
 }
 
-const state = useLocalStorage('PWKSsCLUB', { main: optionsState })
+const state = useLocalStorage('PWKSsBeHAVIOR', { main: optionsState })
 
 export const store = {
     setAuth(payload) {

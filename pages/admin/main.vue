@@ -158,6 +158,7 @@ export default {
                         ...student,
                         selectedBehavior: ''
                     }));
+                    console.log(this.listStudent);
                 })
                 .catch(err => {
                     console.error('Error:', err);
@@ -168,8 +169,10 @@ export default {
             await callApi.gettypeBehaviorStudent().then(res => {
                 if (res.code == 0) {
                     this.listTypeBehaviour = res.result
+                    console.log(this.listTypeBehaviour)
                 } else {
                     this.listTypeBehaviour = res.result
+                    console.log(this.listTypeBehaviour)
                 }
             }).catch(err => {
                 console.log(err);
@@ -194,8 +197,9 @@ export default {
                 alert('กรุณาเลือกการหักคะแนนอย่างน้อยหนึ่งรายการ');
                 return;
             }
+
             try {
-                await callApi.deductBehaviorScore(deductionRequests).then(async (res) => {
+                await callApi.deductBehaviorScore(deductionRequests).then((res) => {
                     if (res.code === 0) {
                         deductionRequests.forEach((request) => {
                             const studentToUpdate = this.listStudent.find(student => student.id_school === request.id_school);
@@ -206,27 +210,27 @@ export default {
                         });
 
                         try {
-                            let data = {
-                                t_id: this.getStore().setAuth().id,
-                                student: deductionRequests
+                            const detailsResponse =  callApi.insertDetailsTypeBehaviorScore(deductionRequests);
+                            console.log("callApi.insertDetailsTypeBehaviorScore",detailsResponse)
+                            if (detailsResponse.code === 0) {
+                                console.log("callApi.insertDetailsTypeBehaviorScore",detailsResponse)
+                                // setTimeout(() => {
+                                //     this.alertModal('success', 'สำเร็จ', 'ทำการหักคะเเนนสำเร็จ', true);
+                                // }, 500);
+                            } else {
+                                throw new Error('Failed to insert behavior details');
                             }
-                            await callApi.insertDetailsTypeBehaviorScore(data).then((result) => {
-                                if (result.code === 0) {
-                                    setTimeout(() => {
-                                        this.alertModal('success', 'สำเร็จ', 'ทำการเเก้ไขคะเเนนความประพฤติสำเร็จ', true);
-                                    }, 500);
-                                } else {
-                                    throw new Error('Failed to insert behavior details');
-                                }
-                            });
-
                         } catch (error) {
                             console.error('Error inserting behavior details:', error);
-                            alert('เกิดข้อผิดพลาดในการบันทึกเเก้ไขคะเเนนความประพฤติ');
+                            alert('เกิดข้อผิดพลาดในการบันทึกรายละเอียดการหักคะแนน');
                         }
+
+                        setTimeout(() => {
+                            this.alertModal('success', 'สำเร็จ', 'ทำการหักคะเเนนสำเร็จ', true);
+                        }, 500);
                     } else {
                         setTimeout(() => {
-                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถเเก้ไขคะเเนนความประพฤติสำเร็จได้');
+                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถหักคะเเนนได้');
                         }, 500);
                     }
                 });

@@ -2,44 +2,10 @@
     <div>
         <div class="row">
             <div class="col bgbox2">
-
-                <div align="left">
-                    <button class="btn btn-danger btn-sm" @click="gotoPage('')">
-                        <Icon name="ep:refresh-left" style="padding: 0 0; margin: 0 0; font-size: 1rem;"
-                            class="fm-kanit" />
-                        กลับหน้าก่อน
+                <div class="mt-3" style="text-align: right;">
+                    <button class="btn btn-primary btn-sm ms-3 w-50 fm-kanit" @click="searchStudent">
+                        ค้นหา
                     </button>
-                </div>
-
-                <div class="mt-3">
-                    <div class="d-flex">
-                        <label for="" class="mt-2 w-10" style="margin-right: -1%;">ชั้นเรียน</label>
-                        <select class="form-select w-50" aria-label="Default select example" v-model="classSearch"
-                            @change="vcCheck()">
-                            <option value=""></option>
-                            <option value="1">ม.1</option>
-                            <option value="2">ม.2</option>
-                            <option value="3">ม.3</option>
-                            <option value="4">ม.4</option>
-                            <option value="5">ม.5</option>
-                            <option value="6">ม.6</option>
-                            <option value="vc">ปวช.</option>
-                        </select>
-
-
-                        <label for="" class="mt-2 w-10 ms-3" style="margin-right: -2%;">ห้อง/ปี</label>
-                        <select class="form-select w-50" aria-label="Default select example" v-model="roomSearch"
-                            @change="getStudent">
-                            <option :value="room" v-for=" room in roomList">{{ room }}</option>
-                        </select>
-
-                        <!-- <input v-model="nameSearch" type="text" class="form-control input-width-student ms-3 w-50"
-                            placeholder="กรอกชื่อนักเรียน" aria-label="Username" aria-describedby="basic-addon1"> -->
-
-                        <button class="btn btn-primary btn-sm ms-3 w-50 fm-kanit" @click="searchStudent">
-                            ค้นหา
-                        </button>
-                    </div>
                 </div>
 
                 <div class="mt-2">
@@ -81,12 +47,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-
-                <div v-if="listStudent.length > 0" class="text-center mt-3">
-                    <button type="button" class="btn btn-success" @click="deductScore">
-                        บันทึกการหักคะแนน
-                    </button>
                 </div>
             </div>
         </div>
@@ -158,6 +118,7 @@ export default {
                         ...student,
                         selectedBehavior: ''
                     }));
+                    console.log(this.listStudent);
                 })
                 .catch(err => {
                     console.error('Error:', err);
@@ -168,8 +129,10 @@ export default {
             await callApi.gettypeBehaviorStudent().then(res => {
                 if (res.code == 0) {
                     this.listTypeBehaviour = res.result
+                    console.log(this.listTypeBehaviour)
                 } else {
                     this.listTypeBehaviour = res.result
+                    console.log(this.listTypeBehaviour)
                 }
             }).catch(err => {
                 console.log(err);
@@ -194,8 +157,9 @@ export default {
                 alert('กรุณาเลือกการหักคะแนนอย่างน้อยหนึ่งรายการ');
                 return;
             }
+
             try {
-                await callApi.deductBehaviorScore(deductionRequests).then(async (res) => {
+                await callApi.deductBehaviorScore(deductionRequests).then((res) => {
                     if (res.code === 0) {
                         deductionRequests.forEach((request) => {
                             const studentToUpdate = this.listStudent.find(student => student.id_school === request.id_school);
@@ -206,27 +170,27 @@ export default {
                         });
 
                         try {
-                            let data = {
-                                t_id: this.getStore().setAuth().id,
-                                student: deductionRequests
+                            const detailsResponse = callApi.insertDetailsTypeBehaviorScore(deductionRequests);
+                            console.log("callApi.insertDetailsTypeBehaviorScore", detailsResponse)
+                            if (detailsResponse.code === 0) {
+                                console.log("callApi.insertDetailsTypeBehaviorScore", detailsResponse)
+                                // setTimeout(() => {
+                                //     this.alertModal('success', 'สำเร็จ', 'ทำการหักคะเเนนสำเร็จ', true);
+                                // }, 500);
+                            } else {
+                                throw new Error('Failed to insert behavior details');
                             }
-                            await callApi.insertDetailsTypeBehaviorScore(data).then((result) => {
-                                if (result.code === 0) {
-                                    setTimeout(() => {
-                                        this.alertModal('success', 'สำเร็จ', 'ทำการเเก้ไขคะเเนนความประพฤติสำเร็จ', true);
-                                    }, 500);
-                                } else {
-                                    throw new Error('Failed to insert behavior details');
-                                }
-                            });
-
                         } catch (error) {
                             console.error('Error inserting behavior details:', error);
-                            alert('เกิดข้อผิดพลาดในการบันทึกเเก้ไขคะเเนนความประพฤติ');
+                            alert('เกิดข้อผิดพลาดในการบันทึกรายละเอียดการหักคะแนน');
                         }
+
+                        setTimeout(() => {
+                            this.alertModal('success', 'สำเร็จ', 'ทำการหักคะเเนนสำเร็จ', true);
+                        }, 500);
                     } else {
                         setTimeout(() => {
-                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถเเก้ไขคะเเนนความประพฤติสำเร็จได้');
+                            this.alertModal('error', 'ไม่สำเร็จ', 'ไม่สามารถหักคะเเนนได้');
                         }, 500);
                     }
                 });

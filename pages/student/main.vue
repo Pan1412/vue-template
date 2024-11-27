@@ -35,39 +35,11 @@
                                     <td colspan="3" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
                                 </tr>
                                 <template v-else>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><b>มาสาย</b></td>
+                                    <tr v-for="(behavior, index) in behaviorDetails" :key="index">
+                                        <td>{{ index + 1 }}</td>
+                                        <td><b>{{ behavior.name_beh }}</b></td>
                                         <td>
-                                            <p class="p-link-target">-5</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td><b>ไม่ส่งการบ้าน</b></td>
-                                        <td>
-                                            <p class="p-link-target">-3</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td><b>ไม่แต่งเครื่องแบบ</b></td>
-                                        <td>
-                                            <p class="p-link-target">-2</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td><b>ทะเลาะวิวาท</b></td>
-                                        <td>
-                                            <p class="p-link-target">-10</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td><b>ใช้มือถือในห้องเรียน</b></td>
-                                        <td>
-                                            <p class="p-link-target">-4</p>
+                                            <p class="p-link-target">{{ behavior.score }}</p>
                                         </td>
                                     </tr>
                                 </template>
@@ -88,13 +60,11 @@ export default {
     data() {
         return {
             studentId: '',
-            listClubRegisted: [],
-            listOsjRegisted: [],
-            openClub: 0,
             fullName: '',
             term: '',
             year: '',
             score: '',
+            behaviorDetails: '',
         }
     },
 
@@ -106,60 +76,41 @@ export default {
             this.studentId = auth.id_school
             let classCheck = auth.class == 'vc' ? `ระดับชั้นปประกาศนียบัตรวิชาชีพชั้นปีที่ ${auth.room}` : `ระดับชั้นมัธยมศึกษาปีที่ ${auth.class} ห้อง ${auth.room}`
             this.fullName = `ของ ${auth.prefix_stu}${auth.name_stu} ${auth.surname_stu} ${classCheck}`
-            this.score = auth.score
+            await this.getScoreBehaviorOneStudent()
         }
 
-        await this.getOpen()
-        await this.getClubRegisted()
-        await this.getOsjRegisted()
-        await this.getOpenClub()
-        await this.geScoreBehaviourStudent()
+        await this.getTypeDetailBehaviorStudent()
     },
 
     methods: {
-        async getOpen() {
-            await callApi.getOpenClub().then(res => {
-                this.openClub = res.open
-            })
-        },
-
-        async getClubRegisted() {
-            await callApi.getClubRegisted({ student_id: this.studentId }).then(res => {
-                if (res.code == 0) {
-                    this.listClubRegisted = res.result
-                }
-            }).catch(err => { })
-        },
-
-        async getOsjRegisted() {
-            await callApi.getOsjStudent({ student_id: this.studentId }).then(res => {
-                if (res.code == 0) {
-                    this.listOsjRegisted = res.result
-                }
-            }).catch(err => { })
-        },
-
-        async getOpenClub() {
-            await callApi.getSetting().then(res => {
-                if (res.code == 0) {
-                    this.term = res.setting.term
-                    this.year = res.setting.year
+        async getScoreBehaviorOneStudent() {
+            const data = {
+                id_school: this.studentId
+            };
+            await callApi.getScoreBehaviorOneStudent(data).then(res => {
+                if (res.code === 0) {
+                    this.score = res.students[0].score;
                 }
             }).catch(err => {
                 console.log(err);
             })
         },
 
-        async geScoreBehaviourStudent() {
-            await callApi.getScoreBehaviorStudent().then(res => {
-                if (res.code == 0) {
-                    console.log(res)
+        async getTypeDetailBehaviorStudent() {
+            const data = {
+                id_school: this.studentId
+            };
+
+            try {
+                const res = await callApi.getTypeDetailBehaviorStudent(data);
+                if (res.code === 0) {
+                    this.behaviorDetails = res.data;
                 } else {
-                    console.log(res)
+                    console.log('ไม่พบข้อมูล');
                 }
-            }).catch(err => {
-                console.log(err);
-            })
+            } catch (err) {
+                console.error('เกิดข้อผิดพลาด:', err);
+            }
         }
     }
 }
@@ -169,8 +120,6 @@ export default {
 .content-sections {
     display: flex;
     margin-top: 1rem;
-
-    // Layout for larger screens
     .left-section {
         flex: 0 0 50%;
         display: flex;
