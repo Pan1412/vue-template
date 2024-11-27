@@ -1,5 +1,5 @@
    body {
-    background: #006699 url("~/assets/image/wall3.jpg") no-repeat;
+    background: #006699 url("~/assets/image/wall4.jpg") no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -20,8 +20,10 @@
   }
   
   .bgbox2 {
-    background-color: #fff;
+    background: #fff url("~/assets/image/f_bg.jpg") no-repeat;
+    background-position: right bottom;
     padding: 20px;
+    padding-bottom: 100px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
     margin: 10px;
@@ -47,6 +49,39 @@
     padding: 0 0;
     margin: 0 0;
     font-size: 1rem;
+  }
+
+  .header_text_l{
+    background-image: url("~/assets/image/tag_l_blue.png");
+    background-repeat: no-repeat;
+    background-size: 320px 80px;
+    color: #fff;
+    padding-left: 20px;
+    padding-top: 20px;
+    height: 80px;
+    margin-left: -27px;
+  }
+
+  .score_board {
+    background-image: url("~/assets/image/b-board.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 110px;
+    padding-bottom: 30px;;
+    font-size: 10rem;
+    color: #fff;
+  }
+
+  .footter_w {
+    background-image: url("~/assets/image/b-board.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 110px;
+    padding-bottom: 30px;;
+    font-size: 10rem;
+    color: #fff;
   }
   
 /* @import 'bootstrap/css/bootstrap'; */
@@ -155,6 +190,19 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: "__sriracha_pwks_club";
+  src: url("../fonts/Sriracha-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.sriracha-font {
+  font-family: "__sriracha_pwks_club";
+  font-weight: 500;
 }
 
 :root {

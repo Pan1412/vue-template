@@ -2,18 +2,10 @@
     <div>
         <div class="row">
             <div class="col bgbox2">
-                <div>
-                    <div class="row-container">
-                        <h2 class="sriracha-font">รายการลงทะเบียน</h2>
-                        <div>
-                            <button class="btn btn-success" @click="logout()">
-                                <Icon name="bi:door-open" style="padding: 0 0; margin: 0 0; font-size: 1.5rem;"
-                                    class="fm-kanit" />
-                                ย้อนกลับ
-                            </button>
-                        </div>
-                    </div>
+                <div class="header_text_l">
+                    <h2 class="sriracha-font">รายการลงทะเบียน</h2>
                 </div>
+                <label class="Promptfont">{{ fullName }}</label>
 
                 <label>{{ fullName }}</label>
 

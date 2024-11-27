@@ -2,40 +2,34 @@
     <div>
         <div class="row">
             <div class="col bgbox2">
-                <div>
-                    <div class="row-container">
-                        <h2 class="sriracha-font">คะเเนนความประพฤติ</h2>
-                        <div>
-                            <button class="btn btn-success" @click="logout()">
-                                <Icon name="bi:door-open" style="padding: 0 0; margin: 0 0; font-size: 1.5rem;"
-                                    class="fm-kanit" />
-                                ย้อนกลับ
-                            </button>
+                <div class="header_text_l">
+                    <h2 class="sriracha-font">รายงานคะแนน</h2>
+                </div>
+                <label class="fm-kanit">{{ fullName }}</label>
+
+                <div class="row mt-2">
+                    <div class="col-md-5 fm-kanit">
+                        <div class="score_board" align="center">
+                            100
                         </div>
                     </div>
-                </div>
-
-                <label style="padding-top: 1rem; padding-bottom: 0.5rem;">{{ fullName }}</label>
-
-                <div class="content-sections mt-3">
-                    <div class="left-section">
-                        <span class="large-number">{{ score }}</span>
-                    </div>
-                    <div class="right-section">
-                        <table class="table table-hover">
-                            <thead>
+                    <div class="col-md-7">
+                        <div class="table-responsive fm-IBM">
+                        <table class="table table-striped table-hover mt-3">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th class="thead-bg" style="width: 3rem;">#</th>
-                                    <th class="thead-bg">รายการ</th>
-                                    <th class="thead-bg">คะแนน</th>
+                                    <th scope="col">#</th>
+                                    <th scope="col">วันที่</th>
+                                    <th scope="col">รายการ</th>
+                                    <th scope="col">คะแนน</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-if="score === 100">
-                                    <td colspan="3" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
+                                    <td colspan="4" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
                                 </tr>
-                                <template v-else>
                                     <tr>
+                                        <td>1</td>
                                         <td>1</td>
                                         <td><b>มาสาย</b></td>
                                         <td>
@@ -44,6 +38,7 @@
                                     </tr>
                                     <tr>
                                         <td>2</td>
+                                        <td>1</td>
                                         <td><b>ไม่ส่งการบ้าน</b></td>
                                         <td>
                                             <p class="p-link-target">-3</p>
@@ -51,6 +46,7 @@
                                     </tr>
                                     <tr>
                                         <td>3</td>
+                                        <td>1</td>
                                         <td><b>ไม่แต่งเครื่องแบบ</b></td>
                                         <td>
                                             <p class="p-link-target">-2</p>
@@ -58,6 +54,7 @@
                                     </tr>
                                     <tr>
                                         <td>4</td>
+                                        <td>1</td>
                                         <td><b>ทะเลาะวิวาท</b></td>
                                         <td>
                                             <p class="p-link-target">-10</p>
@@ -65,17 +62,21 @@
                                     </tr>
                                     <tr>
                                         <td>5</td>
+                                        <td>1</td>
                                         <td><b>ใช้มือถือในห้องเรียน</b></td>
                                         <td>
                                             <p class="p-link-target">-4</p>
                                         </td>
                                     </tr>
-                                </template>
                             </tbody>
                         </table>
+                        </div>
                     </div>
 
                 </div>
+
+
+
             </div>
         </div>
     </div>
