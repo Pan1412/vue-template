@@ -27,6 +27,7 @@
                                 <tr>
                                     <th class="thead-bg" style="width: 3rem;">#</th>
                                     <th class="thead-bg">รายการ</th>
+                                    <th class="thead-bg">วันที่</th>
                                     <th class="thead-bg">คะแนน</th>
                                 </tr>
                             </thead>
@@ -38,6 +39,9 @@
                                     <tr v-for="(behavior, index) in behaviorDetails" :key="index">
                                         <td>{{ index + 1 }}</td>
                                         <td><b>{{ behavior.name_beh }}</b></td>
+                                        <td>
+                                            <p class="p-link-target">{{ formatDate(behavior.date) }}</p>
+                                        </td>
                                         <td>
                                             <p class="p-link-target">{{ behavior.score }}</p>
                                         </td>
@@ -83,6 +87,14 @@ export default {
     },
 
     methods: {
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); 
+            const year = String(date.getFullYear()).slice(-2);
+            return `${day}/${month}/${year}`;
+        },
+
         async getScoreBehaviorOneStudent() {
             const data = {
                 id_school: this.studentId
@@ -105,6 +117,7 @@ export default {
                 const res = await callApi.getTypeDetailBehaviorStudent(data);
                 if (res.code === 0) {
                     this.behaviorDetails = res.data;
+                    console.log(this.behaviorDetails)
                 } else {
                     console.log('ไม่พบข้อมูล');
                 }
@@ -120,6 +133,7 @@ export default {
 .content-sections {
     display: flex;
     margin-top: 1rem;
+
     .left-section {
         flex: 0 0 50%;
         display: flex;
