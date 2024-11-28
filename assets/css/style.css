@@ -642,6 +642,16 @@ h6 {
   vertical-align: middle; /* ช่วยให้แน่ใจว่าองค์ประกอบจะอยู่ในแนวเดียวกัน */
 }
 
+.block-main {
+  margin-top: 5%;
+}
+
+.block-bg-main {
+  width: 1010px;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+}
+
 @media screen and (min-width: 320px) and (max-width: 360px) {
   .block-main {
     margin-top: 5%;

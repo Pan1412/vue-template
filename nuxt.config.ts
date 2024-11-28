@@ -48,7 +48,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public:{
-      baseURL: process.env.BASE_URL
+      baseURL: process.env.BASE_URL,
+      baseMainURL: 'http://localhost:4530/pmain/'
+      // baseMainURL: 'https://last.pwks.ac.th/pmain/'
     }
   }
 })
