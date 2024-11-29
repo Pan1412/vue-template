@@ -5,18 +5,58 @@
             <Title>{{ titleWeb }}</Title>
         </Head>
 
-        <div class="mt-4">
+        <!-- สำหรับนักเรียน -->
+        <div v-if="rollCheck == 'student'">
+
+            <nav class="navbar fixed-top bg-body-tertiary">
+                <div class="container-fluid fm-kanit">
+                    <div class="color_per fw-500">{{ hTitle }}</div>
+                    <div><a class="color_per" href="#"><Icon name="material-symbols:arrow-back-2" style="font-size: 1.4rem;" />กลับหน้าเมนูหลัก</a></div>
+                </div>
+            </nav>
+
+            <div class="" style="margin-top: 70px;">
             <div align="center">
-                <img src="../assets/image/color.png" alt="" class="img-logo">
-                <h1 class="sriracha-font stroke text-white text-head-club">{{ title }}</h1>
-                <h5 class="sriracha-font stroke text-white text-sub-font-club">{{ subTitle }}</h5>
+                <img src="../assets/image/header3.png" width="450" class="img-fluid">
+                <!-- <h1 class="sriracha-font stroke text-white text-head-club">{{ title }}</h1> -->
+            </div>
             </div>
 
+                <div class="container">
+                    <slot />
+                </div>
         </div>
-        <div class="bg-admin" v-if="rollCheck == 'admin'"></div>
-        <div class="container">
-            <slot />
+
+        <!-- สำหรับครูและแอดมิน -->
+        <div v-if="rollCheck == 'admin' || rollCheck == 'teacher'">
+
+                    <div class="position-box-main">
+                    <div v-if="checkLogin && this.getStore().setCheckSideMenu() && !checkPrint">
+                        <SubMenuNav :openSubMenu="openSubMenu" :clickOpenSubMenu="clickOpenSubMenu"  />
+                    </div>
+
+                    <main class="main mg-t-body scroll-main">
+                        <slot />
+                        <footer v-if="checkLogin && !checkPrint">
+                            <div align="center">
+                                <div class="block-main" style="margin-top: unset !important">
+                                    <div class="block-bg-main box-footer mb-5" style="border-radius: 0 0 10px 10px !important;">
+                                        <div style="padding-top: 3rem;">
+                                            <div class="divider-solid" style="height: 1px; width: 95%;"></div>
+                                        </div>
+
+                                        <!--!อันนี้เดวดึงค่ามาจาก setting-->
+                                        <div class="p-4" v-html="footerWeb"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </main>
+                </div>
+
         </div>
+
+        
 
 
     </div>
@@ -39,6 +79,7 @@ export default {
             checkLogin: false,
             checkPrint: false,
             title: 'ระบบจัดการข้อมูลสำหรับครู',
+            hTitle: 'คะแนนความประพฤติ',
             subTitle: '',
             rollCheck: ''
         }
@@ -66,12 +107,15 @@ export default {
 
         if (this.getStore().setAuth()) {
             if (this.getStore().setAuth().roll == 'student') {
+                
                 this.title = 'ระบบคะเเนนความประพฤติ'
                 this.subTitle = 'ตรวจสอบคะเเนนความประพฤติ'
             } else if (this.getStore().setAuth().roll == 'teacher') {
                 this.title = 'ระบบจัดการข้อมูลสำหรับครู'
                 this.subTitle = 'จัดการคะเเนนความประพฤติ'
             }
+
+            this.rollCheck = this.getStore().setAuth().roll
         }
 
 
@@ -154,4 +198,18 @@ export default {
 .text-sub-font-club {
     font-size: 1.25rem;
 }
+
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}
+
 </style>
