@@ -224,6 +224,12 @@ const globalMixin = {
             }
         },
 
+        goBack(){
+            let roll = this.getStore().setAuth().roll
+            // console.log(`${this.$config.public.baseMainURL}${roll == 'student' ? roll : 'teacher'}`);
+            window.location.href = `${this.$config.public.baseMainURL}${roll == 'student' ? roll : 'teacher'}/menu`
+        }
+
     }
 }
 
