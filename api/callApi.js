@@ -120,4 +120,20 @@ export default {
     getTypeDetailBehaviorStudent: (data) => {
         return axios.api.post('/behavior/get-type-behavior-one-student', data).then(response => response.data);
     },
+
+    saveBehavior: data => {
+        return axios.api.post('/behavior/add-type-behavior', data).then(response => response.data);
+    },
+
+    saveVirtue: data => {
+        return axios.api.post('/behavior/add-type-virtue', data).then(response => response.data);
+    },
+
+    editBehavior: () => {
+        return axios.api.get('/behavior/edit-type-behavior').then(response => response.data);
+    },
+
+    editVirtue: data => {
+        return axios.api.post('/behavior/edit-type-virtue', data).then(response => response.data);
+    },
 }
