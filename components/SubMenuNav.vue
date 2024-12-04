@@ -23,7 +23,7 @@
                             </span>
                             ผู้บริหาร
                         </p>
-                        <p class="p-pwks"
+                        <p class="p-pwks fm-kanit"
                             style="margin-bottom: 0; padding-bottom: 0; opacity: 0.5; margin-top: -10px;" v-else>
                             <span>
                                 <Icon name="clarity:group-solid" style="font-size: 1rem; margin-top: -2px;" />
@@ -33,7 +33,7 @@
                     </div>
 
                     <div v-for="mainMenus in menu" class="mt-3">
-                        <div class="box-head-menu">
+                        <div class="box-head-menu fm-kanit">
                             <p class="font-head-menu">{{ mainMenus.headName }}</p>
                             <div class="divider-solid mt-3"></div>
                         </div>
@@ -147,29 +147,16 @@ export default {
                 {
                     headName: 'เมนูหลัก',
                     subMenu: [
-                        { subMenuName: 'หน้าหลัก', link: '/main', icon: 'material-symbols:house', permission: '' },
-                        { subMenuName: 'โปรไฟล์', link: '/profile', icon: 'material-symbols:settings-account-box', permission: '' },
+                        { subMenuName: 'รายชื่อนักเรียน', link: '/main', icon: 'material-symbols:list-alt-check-outline', permission: '' },
+                        { subMenuName: 'บันทึกคดี/พิพาท', link: '/profile', icon: 'hugeicons:justice-scale-01', permission: '' },
+                        { subMenuName: 'รายการพฤติกรรม', link: '/profile', icon: 'uis:layer-group', permission: '' },
                     ]
                 },
                 {
-                    headName: 'เมนูการสอน',
+                    headName: 'รายงาน',
                     subMenu: [
-                        { subMenuName: 'ครูที่ปรึกษา', link: '/teacherConsult', icon: 'mdi:cards-heart-outline', permission: '' },
-                        { subMenuName: 'เพิ่มรายวิชา', link: '/teacherSubject', icon: 'mdi:file-document-plus-outline', permission: '' },
-                    ]
-                },
-                {
-                    headName: 'เมนูเช็คชื่อ',
-                    subMenu: [
-                        // { subMenuName: 'หน้าเสาธง', link: '/attandance', icon: 'fluent:flag-48-filled', permission: '' },
-                        { subMenuName: 'บันทึกหน้าเสาธง (แอดมิน)', link: '/attandanceEdit', icon: 'tabler:flag-search', permission: 'admin' },
-                        {
-                            multi: [
-                                { subMenuName: 'หน้าเสาธง', link: '/attandance', icon: 'fluent:flag-48-filled', permission: '' },
-                                { subMenuName: 'ย้อนหลัง', link: '/attandanceAfter', icon: 'fluent:flag-clock-16-filled', permission: '' },
-                            ]
-                        }
-                        
+                        { subMenuName: 'พฤติกรรมรายบุคคล', link: '/teacherConsult', icon: 'mdi:file', permission: '' },
+                        { subMenuName: 'ลำดับคะแนน', link: '/teacherSubject', icon: 'mdi:file', permission: '' },
                     ]
                 },
 

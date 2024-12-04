@@ -3,10 +3,10 @@
         <div class="nav-head nav-item">
             <div class="d-flex justify-content-center box-title-nav cursor-main" @click="clickOpenSubMenu()" >
                 <Icon name="material-symbols-light:view-list-sharp" class="img-logo-pwks-nav" />
-                <h2 class="f-nav fw-400" style="color: var(--color-school);">PWKSs</h2>
+                <h2 class="f-nav fw-400 fm-kanit" style="color: var(--color-school);">BEHAVIOR-SCORE</h2>
             </div>
             <div class="box-sub-nav-icon">
-                <p class="navbar-brand color_per text-back-nav" @click="goBack()">
+                <p class="navbar-brand color_per text-back-nav fm-kanit" @click="goBack()">
                     <Icon name="material-symbols:arrow-back-2" style="font-size: 1.4rem; margin-right: -3%; margin-top: -2%;" />
                     กลับหน้าเมนูหลัก
                 </p>
@@ -109,7 +109,7 @@ export default {
 
 .img-logo-pwks-nav {
     font-size: 32px;
-    margin-top: 8%;
+    margin-top: 10px;
     color: var(--color-school);
 }
 
@@ -133,7 +133,7 @@ export default {
 
     .img-logo-pwks-nav {
         font-size: 1.3rem;
-        margin-top: 11%;
+        margin-top: 5px;
         color: var(--color-school);
     }
 }
@@ -158,7 +158,7 @@ export default {
 
     .img-logo-pwks-nav {
         font-size: 1.3rem;
-        margin-top: 11%;
+        margin-top: 8px;
         color: var(--color-school);
     }
 }
@@ -183,7 +183,7 @@ export default {
 
     .img-logo-pwks-nav {
         font-size: 1.3rem;
-        margin-top: 11%;
+        margin-top: 8px;
         color: var(--color-school);
     }
 }
@@ -208,7 +208,7 @@ export default {
 
     .img-logo-pwks-nav {
         font-size: 1.3rem;
-        margin-top: 11%;
+        margin-top: 8px;
         color: var(--color-school);
     }
 }
@@ -233,7 +233,7 @@ export default {
 
     .img-logo-pwks-nav {
         font-size: 1.3rem;
-        margin-top: 11%;
+        margin-top: 8px;
         color: var(--color-school);
     }
 }
@@ -258,7 +258,7 @@ export default {
 
 .img-logo-pwks-nav {
     font-size: 1.3rem;
-    margin-top: 11%;
+    margin-top: 7px;
     color: var(--color-school);
 }
 }

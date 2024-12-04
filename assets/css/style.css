@@ -1,89 +1,107 @@
-   body {
-    background: #006699 url("~/assets/image/wall4.jpg") no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    /* font-family: "__font_pwks_kanit"; */
-  }
-  
-  .bg-admin {
-    background-image: url("~/assets/image/wall3.jpg");
-    width: 100%;
-    min-height: 100vh;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-  }
-  
-  .bgbox2 {
-    background: #fff url("~/assets/image/f_bg.jpg") no-repeat;
-    background-position: right bottom;
-    padding: 20px;
-    padding-bottom: 100px;
-    -webkit-border-radius: 8px;
-    border-radius: 8px;
-    margin: 10px;
-  }
-  
-  .bgbox4 {
-    padding: 5px 20px;
-    -webkit-border-radius: 12px;
-    border-radius: 12px;
-    margin: 10px;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .thead-bg {
-    background-color: #e9ecef !important;
-    color: #495057 !important;
-    border-color: #dee2e6 !important;
-    min-width: 120px;
-  }
-  
-  .icon-status {
-    padding: 0 0;
-    margin: 0 0;
-    font-size: 1rem;
-  }
+body {
+  background: #006699 url("~/assets/image/wall4.jpg") no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
-  .header_text_l{
-    background-image: url("~/assets/image/tag_l_blue.png");
-    background-repeat: no-repeat;
-    background-size: 320px 80px;
-    color: #fff;
-    padding-left: 20px;
-    padding-top: 20px;
-    height: 80px;
-    margin-left: -27px;
-  }
+.mainbg_1 {
+  background: #006699 url("~/assets/image/wall4.jpg") no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  /* font-family: "__font_pwks_kanit"; */
+}
 
-  .score_board {
-    background-image: url("~/assets/image/b-board.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    padding-top: 110px;
-    padding-bottom: 30px;;
-    font-size: 10rem;
-    color: #fff;
-  }
+.mainbg_2 {
+  font-family: "__font_pwks_kanit";
+  background-image: url("~/assets/image/bg_school.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  /* background-color: #ececec; */
+}
 
-  .footter_w {
-    background-image: url("~/assets/image/b-board.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    padding-top: 110px;
-    padding-bottom: 30px;;
-    font-size: 10rem;
-    color: #fff;
-  }
-  
+.bg-admin {
+  background-image: url("~/assets/image/wall3.jpg");
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.bgbox2 {
+  background: #fff url("~/assets/image/f_bg.jpg") no-repeat;
+  background-position: right bottom;
+  padding: 20px;
+  padding-bottom: 100px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.bgbox4 {
+  padding: 5px 20px;
+  -webkit-border-radius: 12px;
+  border-radius: 12px;
+  margin: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.thead-bg {
+  background-color: #e9ecef !important;
+  color: #495057 !important;
+  border-color: #dee2e6 !important;
+  min-width: 120px;
+}
+
+.icon-status {
+  padding: 0 0;
+  margin: 0 0;
+  font-size: 1rem;
+}
+
+.header_text_l {
+  background-image: url("~/assets/image/tag_l_blue.png");
+  background-repeat: no-repeat;
+  background-size: 320px 80px;
+  color: #fff;
+  padding-left: 20px;
+  padding-top: 20px;
+  height: 80px;
+  margin-left: -27px;
+}
+
+.score_board {
+  background-image: url("~/assets/image/b-board.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding-top: 110px;
+  padding-bottom: 30px;
+  ;
+  font-size: 10rem;
+  color: #fff;
+}
+
+.footter_w {
+  background-image: url("~/assets/image/b-board.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding-top: 110px;
+  padding-bottom: 30px;
+  ;
+  font-size: 10rem;
+  color: #fff;
+}
+
 /* @import 'bootstrap/css/bootstrap'; */
 
 @font-face {
@@ -97,13 +115,11 @@
 @font-face {
   font-family: "__font_pwks_ui";
   src: url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.eot");
-  src: url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.eot?#iefix")
-      format("embedded-opentype"),
+  src: url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.eot?#iefix") format("embedded-opentype"),
     url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.woff") format("woff"),
     url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.woff2") format("woff2"),
     url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.ttf") format("truetype"),
-    url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.svg#PSL-Kittithada")
-      format("svg");
+    url("/assets/fonts/b37cec1772007bb4bf27090dc9597172.svg#PSL-Kittithada") format("svg");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -263,11 +279,11 @@
   background: white !important;
 }
 
-.color_per{
+.color_per {
   color: #8e44ad;
 }
 
-.bg-print{
+.bg-print {
   background-color: white;
   position: absolute;
   z-index: 99;
@@ -376,7 +392,7 @@ h6 {
   color: var(--color-school);
 }
 
-.style-font-date{
+.style-font-date {
   color: #000000;
   font-size: 1.2rem;
 }
@@ -386,7 +402,7 @@ h6 {
   margin: 0 !important;
 }
 
-.style-border-check-date{
+.style-border-check-date {
   border: 4px solid var(--color-danger);
   width: 170px;
   border-radius: 8px;
@@ -466,14 +482,14 @@ h6 {
   border-color: var(--color-warning-op);
   background-color: var(--color-warning-op);
   margin-left: 15px;
-  margin-top: -20px ;
+  margin-top: -20px;
   display: inline-block;
   border-radius: 100px;
 }
 
 /* Table */
 .th-color-main {
-  background-color: #85929e  !important;
+  background-color: #85929e !important;
   color: #fff !important;
 }
 
@@ -499,17 +515,17 @@ h6 {
   border-radius: 10px 10px 0 0;
 }
 
-.box-info-main{
+.box-info-main {
   width: 100%;
   display: flex;
   padding: 1rem;
 }
 
-.box-table-main{
+.box-table-main {
   width: 100%;
 }
 
-.box-form-teacher-info{
+.box-form-teacher-info {
   padding: 0 2rem 0 2rem;
 }
 
@@ -545,37 +561,37 @@ h6 {
 
 .ribbon span::before {
   content: "";
-    position: absolute;
-    left: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 9px solid #8F0808;
-    border-right: 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-top: 9px solid #8F0808;
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 9px solid #8F0808;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-top: 9px solid #8F0808;
 }
 
 .ribbon span::after {
   content: "";
-    position: absolute;
-    right: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 8px solid transparent;
-    border-right: 8px solid #8F0808;
-    border-bottom: 8px solid transparent;
-    border-top: 8px solid #8F0808;
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 8px solid transparent;
+  border-right: 8px solid #8F0808;
+  border-bottom: 8px solid transparent;
+  border-top: 8px solid #8F0808;
 }
 
 .ribbon-period {
   position: absolute;
-    right: -5px;
-    top: -20px;
-    z-index: 1;
-    overflow: hidden;
-    width: 150px;
-    height: 150px;
-    text-align: right;
+  right: -5px;
+  top: -20px;
+  z-index: 1;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+  text-align: right;
 }
 
 .ribbon-period span {
@@ -599,26 +615,26 @@ h6 {
 
 .ribbon-period span::before {
   content: "";
-    position: absolute;
-    left: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 9px solid #8F0808;
-    border-right: 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-top: 9px solid #8F0808;
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 9px solid #8F0808;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-top: 9px solid #8F0808;
 }
 
 .ribbon-period span::after {
   content: "";
-    position: absolute;
-    right: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 8px solid transparent;
-    border-right: 8px solid #8F0808;
-    border-bottom: 8px solid transparent;
-    border-top: 8px solid #8F0808;
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 8px solid transparent;
+  border-right: 8px solid #8F0808;
+  border-bottom: 8px solid transparent;
+  border-top: 8px solid #8F0808;
 }
 
 .text-danger {
@@ -637,9 +653,11 @@ h6 {
   background-color: #884ea0;
   color: white;
   border-radius: 8px;
-  white-space: nowrap; /* ป้องกันการตัดบรรทัด */
+  white-space: nowrap;
+  /* ป้องกันการตัดบรรทัด */
   display: inline-block;
-  vertical-align: middle; /* ช่วยให้แน่ใจว่าองค์ประกอบจะอยู่ในแนวเดียวกัน */
+  vertical-align: middle;
+  /* ช่วยให้แน่ใจว่าองค์ประกอบจะอยู่ในแนวเดียวกัน */
 }
 
 .block-main {
@@ -649,7 +667,8 @@ h6 {
 .block-bg-main {
   width: 1010px;
   background-color: white;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
+  padding: 30px;
 }
 
 @media screen and (min-width: 320px) and (max-width: 360px) {
@@ -689,19 +708,19 @@ h6 {
     font-size: 0.8rem;
   }
 
-  .box-info-main{
+  .box-info-main {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     padding: 1rem;
   }
 
-  .box-table-main{
+  .box-table-main {
     width: 100%;
     margin-left: unset !important;
   }
 
-  .box-form-teacher-info{
+  .box-form-teacher-info {
     padding: unset !important;
   }
 }
@@ -743,19 +762,19 @@ h6 {
     font-size: 0.8rem;
   }
 
-  .box-info-main{
+  .box-info-main {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     padding: 1rem;
   }
 
-  .box-table-main{
+  .box-table-main {
     width: 100%;
     margin-left: unset !important;
   }
 
-  .box-form-teacher-info{
+  .box-form-teacher-info {
     padding: unset !important;
   }
 }
@@ -797,23 +816,23 @@ h6 {
     font-size: 0.8rem;
   }
 
-  .box-info-main{
+  .box-info-main {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     padding: 1rem;
   }
 
-  .box-table-main{
+  .box-table-main {
     width: 100%;
     margin-left: unset !important;
   }
 
-  .box-footer{
+  .box-footer {
     margin-top: -6rem;
   }
 
-  .box-form-teacher-info{
+  .box-form-teacher-info {
     padding: unset !important;
   }
 }
@@ -855,19 +874,19 @@ h6 {
     font-size: 0.8rem;
   }
 
-  .box-info-main{
+  .box-info-main {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     padding: 1rem;
   }
 
-  .box-table-main{
+  .box-table-main {
     width: 100%;
     margin-left: unset !important;
   }
 
-  .box-form-teacher-info{
+  .box-form-teacher-info {
     padding: unset !important;
   }
 }
@@ -909,16 +928,16 @@ h6 {
     font-size: 0.8rem;
   }
 
-  .box-table-main{
+  .box-table-main {
     width: 100%;
     margin-left: unset !important;
   }
 
-  .box-form-teacher-info{
+  .box-form-teacher-info {
     padding: unset !important;
   }
 
-  .box-info-main{
+  .box-info-main {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
@@ -985,5 +1004,3 @@ h6 {
     border-radius: 10px;
   }
 }
-
-  
