@@ -4,7 +4,7 @@
             <div class="block-main">
                 <div class="block-bg-main">
                     <div class="row">
-                        <div class="col bgbox2">
+                        <div class="col">
 
                             <div align="left">
                                 <button class="btn btn-danger btn-sm" @click="gotoPage('')">
@@ -246,6 +246,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+body {
+  font-family: "__font_pwks_kanit";
+  background-image: url("assets/img/bg_school.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  /* background-color: #ececec; */
+}
+
 .thead-bg {
     background-color: #e9ecef;
     color: #495057;

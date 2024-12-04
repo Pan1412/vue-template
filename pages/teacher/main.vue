@@ -4,7 +4,7 @@
             <div class="block-main">
                 <div class="block-bg-main">
                     <div class="row">
-                        <div class="col bgbox2">
+                        <div class="col">
 
                             <div align="left">
                                 <button class="btn btn-danger btn-sm" @click="gotoPage('')">

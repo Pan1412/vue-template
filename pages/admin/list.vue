@@ -5,26 +5,20 @@
                 <div class="block-bg-main">
                     <div class="row">
                         <div class="col bgbox2">
-
                             <div align="right">
-                                <button class="btn btn-success btn-sm" @click="openModal('behavior')">
-                                    เพิ่ม
-                                </button>
+                                <button class="btn btn-success btn-sm" @click="openModal('behavior')">เพิ่ม</button>
                             </div>
-
                             <div align="left">รายการความประพฤติ</div>
-
                             <div class="mt-2">
                                 <div class="table-responsive mt-3">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th class="thead-bg" style="width: 5%;">#</th>
-                                                <th class="thead-bg" style="text-align: left; width: 200rem;">
-                                                    รายการตักเตือน</th>
-                                                <th class="thead-bg">คะแนน</th>
-                                                <th class="thead-bg" style="width: 10%;">แก้ไข</th>
-                                                <th class="thead-bg" style="width: 10%;">ลบ</th>
+                                                <th>#</th>
+                                                <th style="text-align: left;">รายการความประพฤติ</th>
+                                                <th>คะแนน</th>
+                                                <th>แก้ไข</th>
+                                                <th>ลบ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -32,35 +26,33 @@
                                                 <td>{{ index + 1 }}</td>
                                                 <td>{{ item.name_beh }}</td>
                                                 <td>{{ item.score }}</td>
-                                                <td><button class="btn btn-warning btn-sm" @click="editBehavior(item.id)">แก้ไข</button></td>
-                                                <td><button class="btn btn-danger btn-sm">ลบ</button></td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm"
+                                                        @click="editItem(item, 'behavior')">แก้ไข</button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm"
+                                                        @click="deleteBehavior(item.id)">ลบ</button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-
                             <div align="right">
-                                <button class="btn btn-success btn-sm" @click="openModal('virtue')">
-                                    เพิ่ม
-                                </button>
+                                <button class="btn btn-success btn-sm" @click="openModal('virtue')">เพิ่ม</button>
                             </div>
-
-                            <div align="left">
-                                รายการคุณธรรม
-                            </div>
-
+                            <div align="left">รายการคุณธรรม</div>
                             <div class="mt-2">
                                 <div class="table-responsive mt-3">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th class="thead-bg" style="width: 5%;">#</th>
-                                                <th class="thead-bg" style="text-align: left; width: 200rem;">
-                                                    รายการคุณธรรม</th>
-                                                <th class="thead-bg">จำนวน</th>
-                                                <th class="thead-bg" style="width: 10%;">แก้ไข</th>
-                                                <th class="thead-bg" style="width: 10%;">ลบ</th>
+                                                <th>#</th>
+                                                <th style="text-align: left;">รายการคุณธรรม</th>
+                                                <th>คะแนน</th>
+                                                <th>แก้ไข</th>
+                                                <th>ลบ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -68,37 +60,41 @@
                                                 <td>{{ index + 1 }}</td>
                                                 <td>{{ item.name_beh }}</td>
                                                 <td>{{ item.score }}</td>
-                                                <td><button class="btn btn-warning btn-sm"
-                                                        @click="editBehavior(item.id)">แก้ไข</button></td>
-                                                <td><button class="btn btn-danger btn-sm">ลบ</button></td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm"
+                                                        @click="editItem(item, 'virtue')">แก้ไข</button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm"
+                                                        @click="deleteVirtue(item.id)">ลบ</button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
 
+                            <!-- Modal -->
                             <div v-if="isModalOpen" class="modal-overlay">
                                 <div class="modal-show">
-                                    <h5 v-if="formType === 'behavior'">เพิ่มรายการความประพฤติ</h5>
-                                    <h5 v-if="formType === 'virtue'">เพิ่มรายการคุณธรรมใหม่</h5>
-
-                                    <form @submit.prevent="formType === 'behavior' ? saveBehavior() : saveVirtue()">
+                                    <h5>{{ isEditing ? `แก้ไข${modalTitle}` : `เพิ่ม${modalTitle}` }}</h5>
+                                    <form @submit.prevent="saveItem">
                                         <div class="form-group">
-                                            <label>ชื่อ{{ formType === 'behavior' ? 'ความประพฤติ' : 'คุณธรรม' }}</label>
-                                            <input v-model="form.name" type="text" class="form-control"
+                                            <label>ชื่อ{{ modalTitle }}</label>
+                                            <input v-model="form.name_beh" type="text" class="form-control"
                                                 placeholder="กรอกชื่อ" required />
                                         </div>
                                         <div class="form-group">
-                                            <label>จำนวนคะเเนน</label>
+                                            <label>จำนวนคะแนน</label>
                                             <input v-model="form.score" type="number" class="form-control"
-                                                placeholder="กรอกจำนวนคะเเนน" required />
+                                                placeholder="กรอกจำนวนคะแนน" required />
                                         </div>
-                                        <div style="padding-top: 2rem;">
-                                            <button type="submit" class="btn btn-primary btn-sm">บันทึก</button>
-                                            <button type="button" @click="closeModal" style="margin-left: 2rem"
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary btn-sm">{{ isEditing ?
+                                                'บันทึกการแก้ไข' : 'บันทึก' }}</button>
+                                            <button type="button" @click="closeModal"
                                                 class="btn btn-secondary btn-sm">ยกเลิก</button>
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
@@ -110,13 +106,11 @@
         </div>
     </div>
 </template>
+
 <script>
-import callApi from '../api/callApi'
+import callApi from '../api/callApi';
+
 export default {
-    setup() {
-        const swal = getCurrentInstance().appContext.config.globalProperties;
-        return { swal }
-    },
     data() {
         return {
             classSearch: '',
@@ -126,25 +120,23 @@ export default {
             dataSearch: {
                 class: '',
                 room: '',
-                name: '',
+                name_beh: '',
                 tId: 0
             },
-
-            listStudent: [],
             listTypeBehaviour: [],
-            selectedBehavior: [],
-            tId: 22,
-            isModalOpen: false,
-            form: {
-                name: '',
-                score: '',
-            },
-            formType: '',
             filteredTypeBehaviour: [],
             filteredTypeVirtue: [],
-        }
+            isModalOpen: false,
+            isEditing: false,
+            formType: '',
+            modalTitle: '',
+            form: {
+                id: null,
+                name_beh: '',
+                score: '',
+            },
+        };
     },
-
     mounted() {
         let auth = this.getStore().setAuth()
 
@@ -152,8 +144,8 @@ export default {
             this.tId = auth.id
         }
         this.getDaTaTypeBehaviour()
-    },
 
+    },
     methods: {
         vcCheck() {
             if (this.classSearch == 'vc') {
@@ -171,7 +163,6 @@ export default {
                     this.listTypeBehaviour = res.result
                 } else {
                     this.listTypeBehaviour = res.result
-                    console.log(this.listTypeBehaviour);
                 }
                 this.filteredTypeBehaviour = this.listTypeBehaviour.filter(item => item.type === 1);
                 this.filteredTypeVirtue = this.listTypeBehaviour.filter(item => item.type === 2);
@@ -179,103 +170,87 @@ export default {
                 console.log(err);
             })
         },
-
         openModal(type) {
             this.formType = type;
+            this.modalTitle = type === 'behavior' ? 'ความประพฤติ' : 'คุณธรรม';
             this.isModalOpen = true;
         },
         closeModal() {
             this.isModalOpen = false;
-            this.resetForm();
+            this.isEditing = false;
+            this.form = { id: null, name_beh: '', score: '' };
         },
-        resetForm() {
-            this.form = {
-                name: '',
-                score: '',
-            };
+        editItem(item, type) {
+            this.isEditing = true;
+            this.isModalOpen = true;
+            this.form = { ...item };
+            this.formType = type;
+            this.modalTitle = type === 'behavior' ? 'ความประพฤติ' : 'คุณธรรม';
         },
-        async saveBehavior() {
+
+        async saveItem() {
             try {
-                const response = await callApi.saveBehavior({
-                    name: this.form.name,
-                    type: 1,
+                const apiMethod = this.isEditing
+                    ? (this.formType === 'behavior' ? callApi.updateBehavior : callApi.updateVirtue)
+                    : (this.formType === 'behavior' ? callApi.saveBehavior : callApi.saveVirtue);
+
+                const payload = {
+                    id: this.form.id,
+                    name: this.form.name_beh,
+                    type: this.formType === 'behavior' ? 1 : 2,
                     score: this.form.score
-                });
-                if (response.code === 0) {
-                    alert("เพิ่มความประพฤติสำเร็จ");
-                    this.getDaTaTypeBehaviour()
+                };
+                const response = await apiMethod(payload);
+
+                if (response && response.code === 0) {
                     this.closeModal();
+                    alert(this.isEditing ? 'แก้ไขสำเร็จ' : 'เพิ่มสำเร็จ');
+                    return this.getDaTaTypeBehaviour()
                 } else {
-                    alert(response.message || "เกิดข้อผิดพลาด");
+                    alert(response?.message || 'เกิดข้อผิดพลาด');
+                    this.closeModal();
                 }
             } catch (error) {
-                console.error(error);
-                alert("ไม่สามารถเพิ่มข้อมูลได้");
+                console.error('Error occurred:', error);
+                alert('ไม่สามารถบันทึกข้อมูลได้');
+                this.closeModal();
             }
         },
 
-        async saveVirtue() {
-            try {
-                const response = await callApi.saveVirtue({
-                    name: this.form.name,
-                    type: 2,
-                    score: this.form.score
+        async deleteBehavior(id) {
+            await callApi.deleteBehavior({ id })
+                .then(res => {
+                    if (res.code === 0) {
+                        alert('ลบข้อมูลพฤติกรรมสำเร็จ');
+                        this.getDaTaTypeBehaviour();
+                    } else {
+                        alert(res.message || 'เกิดข้อผิดพลาด');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('ไม่สามารถลบข้อมูลพฤติกรรมได้');
                 });
-                if (response.code === 0) {
-                    alert("เพิ่มคุณธรรมสำเร็จ");
-                    this.getDaTaTypeBehaviour()
-                    this.closeModal();
-                } else {
-                    alert(response.message || "เกิดข้อผิดพลาด");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("ไม่สามารถเพิ่มข้อมูลได้");
-            }
         },
 
-        async editBehavior(id) {
-            try {
-                const response = await callApi.editBehavior(id);
-                console.log(response);
-                if (response.code === 0) {
-                    this.form = {
-                        id: response.data.id,
-                        name: response.data.name_beh,
-                        score: response.data.score
-                    };
-                    this.isModalOpen = true;
-                } else {
-                    alert("ไม่สามารถดึงข้อมูลได้");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("เกิดข้อผิดพลาดในการดึงข้อมูล");
-            }
-        },
-
-        async editVirtue() {
-            try {
-                const response = await callApi.editVirtue({
-                    name: this.form.name,
-                    type: 2,
-                    score: this.form.score
+        async deleteVirtue(id) {
+            await callApi.deleteVirtue({ id })
+                .then(res => {
+                    if (res.code === 0) {
+                        alert('ลบข้อมูลคุณธรรมสำเร็จ');
+                        this.getDaTaTypeBehaviour();
+                    } else {
+                        alert(res.message || 'เกิดข้อผิดพลาด');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('ไม่สามารถลบข้อมูลคุณธรรมได้');
                 });
-                if (response.code === 0) {
-                    alert("เพิ่มคุณธรรมสำเร็จ");
-                    this.getDaTaTypeBehaviour()
-                    this.closeModal();
-                } else {
-                    alert(response.message || "เกิดข้อผิดพลาด");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("ไม่สามารถเพิ่มข้อมูลได้");
-            }
         }
 
     },
-}
+};
 </script>
 
 <style lang="scss" scoped>

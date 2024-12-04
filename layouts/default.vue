@@ -6,7 +6,7 @@
         </Head>
 
         <!-- สำหรับนักเรียน -->
-        <div v-if="rollCheck == 'student'">
+        <div v-if="rollCheck == 'student'" class="mainbg_1">
 
             <nav class="navbar fixed-top bg-body-tertiary">
                 <div class="container-fluid fm-kanit">
@@ -30,7 +30,7 @@
         </div>
 
         <!-- สำหรับครูและแอดมิน -->
-        <div v-if="rollCheck == 'admin' || rollCheck == 'teacher'">
+        <div v-if="rollCheck == 'admin' || rollCheck == 'teacher'" class="mainbg_2">
 
             <NavBarHeader v-if="!checkPrint" />
 
@@ -217,9 +217,9 @@ export default {
 }
 
 .main {
-  height: 100%;
-  min-height: calc(100vh - 352px);
-  width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 352px);
+    width: 100%;
 }
 
 .box-tab-nav {
