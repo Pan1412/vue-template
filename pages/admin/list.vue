@@ -204,10 +204,24 @@ export default {
 
                 if (response && response.code === 0) {
                     this.closeModal();
-                    alert(this.isEditing ? 'แก้ไขสำเร็จ' : 'เพิ่มสำเร็จ');
+                    setTimeout(() => {
+                        this.alertModal(
+                            'success',
+                            'สำเร็จ',
+                            this.isEditing ? 'ทำการแก้ไขคะแนนความประพฤติสำเร็จ' : 'เพิ่มคะแนนความประพฤติสำเร็จ',
+                            true
+                        );
+                    }, 500);
                     return this.getDaTaTypeBehaviour()
                 } else {
-                    alert(response?.message || 'เกิดข้อผิดพลาด');
+                    setTimeout(() => {
+                        this.alertModal(
+                            'error',
+                            'ข้อผิดพลาด',
+                            response?.message || 'เกิดข้อผิดพลาด',
+                            false
+                        );
+                    }, 500);
                     this.closeModal();
                 }
             } catch (error) {
@@ -221,7 +235,14 @@ export default {
             await callApi.deleteBehavior({ id })
                 .then(res => {
                     if (res.code === 0) {
-                        alert('ลบข้อมูลพฤติกรรมสำเร็จ');
+                        setTimeout(() => {
+                            this.alertModal(
+                                'success',
+                                'สำเร็จ',
+                                'ลบข้อมูลรายการความประพฤติสำเร็จ',
+                                true
+                            );
+                        }, 500);
                         this.getDaTaTypeBehaviour();
                     } else {
                         alert(res.message || 'เกิดข้อผิดพลาด');
@@ -237,7 +258,14 @@ export default {
             await callApi.deleteVirtue({ id })
                 .then(res => {
                     if (res.code === 0) {
-                        alert('ลบข้อมูลคุณธรรมสำเร็จ');
+                        setTimeout(() => {
+                            this.alertModal(
+                                'success',
+                                'สำเร็จ',
+                                'ลบข้อมูลรายการคุณธรรมสำเร็จ',
+                                true
+                            );
+                        }, 500);
                         this.getDaTaTypeBehaviour();
                     } else {
                         alert(res.message || 'เกิดข้อผิดพลาด');
