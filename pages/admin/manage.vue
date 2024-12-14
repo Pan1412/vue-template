@@ -22,13 +22,14 @@
                     <tbody>
                       <tr v-for="(item, index) in listDetailTypeBehaviour" :key="item.id">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ item.name_beh }}</td>
+                        <td>{{ item.details[0].name_beh }}</td>
                         <td>
                           <button class="btn btn-warning btn-sm"
-                            @click="updateDeatilBehaviour(item.id)">รายละเอียด&แก้ไข</button>
+                            @click="openModalForEdit(item)">รายละเอียด&แก้ไข</button>
                         </td>
                         <td>
-                          <button class="btn btn-danger btn-sm" @click="deleteDeatilOneBehaviour(item.id)">ลบ</button>
+                          <button class="btn btn-danger btn-sm"
+                            @click="deleteDeatilOneBehaviour(item.main_id)">ลบ</button>
                         </td>
                       </tr>
                     </tbody>
@@ -41,15 +42,18 @@
       </div>
     </div>
 
-
+    <!-- สำหรับเพิ่มข้อมูลใหม่ -->
     <div v-if="isModalOpen" class="modal-overlay">
       <div class="modal-show">
-        <h3 class="text-left">บันทึกคะเเนนความประพฤติ</h3>
+        <h3 class="text-left">{{ isEditing ? 'แก้ไขความประพฤติ' : 'บันทึกความประพฤติ' }}</h3>
         <form @submit.prevent="saveDetailBehaviorAndDeductBehaviorScore">
 
           <div class="mb-3">
             <label for="studentId" class="form-label">ชื่อความประพฤติ</label>
-            <input type="text" class="form-control" placeholder="กรอกชื่อ" required />
+            <input type="text" class="form-control" placeholder="กรอกชื่อ" required
+              v-model="form.details[0].name_beh" />
+            <label for="studentId" class="form-label">วันที่</label>
+            <input type="date" class="form-control" placeholder="กรอกชื่อ" required v-model="form.date" />
             <label for="studentId" class="form-label">เลขประจำตัวนักเรียน</label>
             <input type="text" class="form-control" id="studentId" v-model="studentId"
               placeholder="กรอกเลขประจำตัวนักเรียน" />
@@ -67,6 +71,7 @@
                   <th>ชั้น</th>
                   <th>ห้อง</th>
                   <th>คะแนน</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -78,6 +83,9 @@
                   <td>{{ student.class }}</td>
                   <td>{{ student.room }}</td>
                   <td>{{ student.score }}</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm" @click="removeStudent(index)">ลบ</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -85,8 +93,7 @@
 
           <div class="mb-3">
             <label for="deductionScore" class="form-label">คะแนนที่จะทำการหัก</label>
-            <input type="number" class="form-control" id="deductionScore" v-model="deductionScore"
-              placeholder="ระบุคะแนนที่หัก" />
+            <input type="number" class="form-control" id="score" v-model="deductionScore" required />
           </div>
           <div class="mb-3">
             <label for="incidentNote" class="form-label">บันทึกเหตุการณ์</label>
@@ -109,12 +116,13 @@
             </div>
           </div>
           <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-success">บันทึกข้อมูล</button>
+            <button type="submit" class="btn btn-success">{{ isEditing ? 'บันทึกการแก้ไข' : 'บันทึกข้อมูล' }}</button>
             <button type="button" class="btn btn-secondary" @click="closeModal">ปิด</button>
           </div>
         </form>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -124,7 +132,7 @@ export default {
   data() {
     return {
       isModalOpen: false,
-      studentId: "",
+      studentId: [],
       listStudents: [],
       deductionScore: null,
       incidentNote: "",
@@ -135,6 +143,7 @@ export default {
         id: null,
         id_school: null,
         t_id: null,
+        details: [{ name_beh: '' }],
         name_beh: '',
         score: '',
         evant: '',
@@ -147,56 +156,35 @@ export default {
       },
     };
   },
+  setup() {
+    const swal = getCurrentInstance().appContext.config.globalProperties;
+    return { swal }
+  },
   mounted() {
     let auth = this.getStore().setAuth()
 
     if (auth) {
       this.tId = auth.id
     }
-    this.getDeatilBehaviour();
+    this.getMainBehaviour();
 
   },
   methods: {
-    async getDeatilBehaviour() {
-      await callApi.getDeatilBehaviour().then(res => {
+    async getMainBehaviour() {
+      await callApi.getMainBehaviour().then(res => {
         if (res.code == 0) {
           this.listDetailTypeBehaviour = res.result
         } else {
           this.listDetailTypeBehaviour = res.result
         }
+        console.log(this.listDetailTypeBehaviour);
+
       }).catch(err => {
         console.log(err);
       })
     },
 
-    // async updateDeatilBehaviour(id) {
-    //   const data = {
-    //     id: this.form.id,
-    //     id_school: this.form.id_school,
-    //     evant: this.form.evant,
-    //     name: this.form.name_beh,
-    //     t_id: this.form.t_id,
-    //     score: this.form.score,
-    //     pic_1: this.form.Pic_1,
-    //     pic_2: this.form.Pic_2,
-    //     pic_3: this.form.Pic_3,
-    //     pic_4: this.form.Pic_4,
-    //     pic_5: this.form.Pic_5,
-    //     time: this.form.created_at,
-    //   };
-    //   await callApi.updateDeatilBehaviour({ id }).then(res => {
-
-    //     if (res.code == 0) {
-    //       this.listDetailTypeBehaviour = res.result
-    //     }
-    //   }).catch(err => {
-    //     console.log(err);
-    //   })
-    // },
-
     async getDeatilOneBehaviour(id) {
-      console.log(id);
-
       await callApi.getDeatilOneBehaviour({ id }).then(res => {
         if (res.code == 0) {
           this.listDetailTypeBehaviour = res.result
@@ -209,63 +197,174 @@ export default {
     },
 
     async deleteDeatilOneBehaviour(id) {
-      console.log(id);
       await callApi.deleteDeatilOneBehaviour({ id }).then(res => {
-        console.log(res);
-
         if (res.code === 0) {
+          this.alertModal('loading', 'กำลังลบข้อมูล กรุณารอสักครู่....')
           setTimeout(() => {
             this.alertModal(
               'success',
               'สำเร็จ',
-              'ลบข้อมูลรายการคุณธรรมสำเร็จ',
+              'ลบข้อมูลสำเร็จ',
               true
             );
           }, 500);
-          return this.getDeatilBehaviour();
-        } else {
-          alert(res.message || 'เกิดข้อผิดพลาด');
+          this.getMainBehaviour();
+          return
         }
       })
         .catch(err => {
           console.error(err);
-          alert('ไม่สามารถลบข้อมูลได้');
+          setTimeout(() => {
+            this.alertModal(
+              'error',
+              'ข้อผิดพลาด',
+              `ไม่สามารถลบข้อมูลได้`,
+              false
+            );
+          }, 500);
         });
     },
 
     openModal() {
+      this.isEditing = false;
+      this.resetForm();
+      this.isModalOpen = true;
+    },
+
+    openModalForEdit(item) {
+      this.isEditing = true;
+      this.form = { ...item };
+      this.studentId = Array.isArray(item.id_schools) ? item.id_schools : [item.id_schools];
+      this.form.date = item.date || '';
+
+      if (this.studentId && this.studentId.length) {
+        this.searchStudent();
+      }
+
+      this.deductionScore = item.details[0].score;
+      this.incidentNote = item.details[0].evant;
+      this.previewImages = [];
+
+      for (let i = 1; i <= 5; i++) {
+        if (item[`pic_${i}`]) {
+          this.previewImages.push(item[`pic_${i}`]);
+        }
+      }
+
       this.isModalOpen = true;
     },
 
     closeModal() {
-      this.listStudents = [];
-      this.studentId = '';
-      this.deductionScore = null;
-      this.incidentNote = '';
-      this.files = [];
+      this.resetForm();
       this.isModalOpen = false;
     },
 
-    async searchStudent() {
-      const data = {
-        id_school: this.studentId
+    resetForm() {
+      this.form = {
+        id: null,
+        id_school: null,
+        t_id: null,
+        details: [{ name_beh: '' }],
+        score: '',
+        evant: '',
+        pic_1: '',
+        pic_2: '',
+        pic_3: '',
+        pic_4: '',
+        pic_5: '',
+        created_at: '',
       };
-      await callApi.searchStudent(data).then(res => {
-        if (res.code === 0) {
-          if (!this.listStudents) this.listStudents = [];
-          this.listStudents = [...this.listStudents, ...res.data];
-          console.log(this.listStudents);
-          return
+      this.studentId = null;
+      this.listStudents = [];
+      this.deductionScore = null;
+      this.incidentNote = '';
+      this.previewImages = [];
+      this.files = [];
+      this.isEditing = false;
+    },
+
+    async searchStudent() {
+      if (!this.studentId || (Array.isArray(this.studentId) && this.studentId.length === 0)) {
+        setTimeout(() => {
+          this.alertModal(
+            'error',
+            'ข้อผิดพลาด',
+            `กรุณากรอกเลขประจำตัวนักเรียนให้ถูกต้อง`,
+            false
+          );
+        }, 500);
+        return;
+      }
+
+      const studentIds = Array.isArray(this.studentId) ? this.studentId : [this.studentId];
+
+      for (let id of studentIds) {
+        const alreadyExists = this.listStudents.some(
+          student => String(student.id_school) === String(id)
+        );
+
+        if (alreadyExists) {
+          setTimeout(() => {
+            this.alertModal(
+              'error',
+              'ข้อผิดพลาด',
+              `มีรหัสประจำตัวของ ${id} อยู่ในรายการแล้ว`,
+              false
+            );
+          }, 500);
+          continue;
         }
-      }).catch(err => {
-        console.log(err);
-      })
+
+        const data = { id_school: id };
+
+        try {
+          const res = await callApi.searchStudent(data);
+
+          if (res.code === 0) {
+            if (res.data.length) {
+              this.listStudents = [...this.listStudents, ...res.data];
+            } else {
+              setTimeout(() => {
+                this.alertModal(
+                  'info',
+                  'ข้อมูล',
+                  `ไม่พบข้อมูลนักเรียนสำหรับรหัส ${id}`,
+                  false
+                );
+              }, 500);
+            }
+          } else {
+            console.error(`Error response code ${res.code} for student ${id}:`, res.message);
+          }
+        } catch (err) {
+          console.error(`Error fetching student ${id}:`, err);
+          setTimeout(() => {
+            this.alertModal(
+              'error',
+              'ข้อผิดพลาด',
+              `เกิดข้อผิดพลาดในการค้นหาข้อมูลสำหรับรหัส ${id}`,
+              false
+            );
+          }, 500);
+        }
+      }
+    },
+
+    async removeStudent(index) {
+      this.listStudents.splice(index, 1);
     },
 
     addFilePhoto(event) {
       const selectedFiles = Array.from(event.target.files);
       if (this.files.length + selectedFiles.length > 5) {
-        alert("สามารถอัปโหลดรูปภาพได้สูงสุด 5 รูป");
+        setTimeout(() => {
+          this.alertModal(
+            'error',
+            'ข้อผิดพลาด',
+            `สามารถอัปโหลดรูปภาพได้สูงสุด 5 รูป`,
+            false
+          );
+        }, 500);
         return;
       }
       selectedFiles.forEach((file) => {
@@ -284,50 +383,112 @@ export default {
     },
 
     async saveDetailBehaviorAndDeductBehaviorScore() {
-      if (!this.listStudents || this.listStudents.length === 0) {
-        alert("กรุณาค้นหานักเรียนก่อนบันทึกข้อมูล");
-        return;
-      }
-
-      if (!this.deductionScore || !this.incidentNote) {
-        alert("กรุณากรอกข้อมูลให้ครบถ้วน");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("t_id", this.getStore().setAuth().id);
-      formData.append("evant", this.incidentNote);
-      formData.append("deductionScore", this.deductionScore);
-
-      this.listStudents.forEach((student, index) => {
-        formData.append(`students[${index}][id]`, student.id);
-        formData.append(`students[${index}][name]`, student.name_stu);
-        formData.append(`students[${index}][id_school]`, student.id_school);
-      });
-
-      if (this.files && this.files.length > 0) {
-        this.files.forEach((file, index) => {
-          formData.append(`images[${index + 1}]`, file);
-        });
-      }
+      console.log(this.form);
       
-      console.log([...formData.entries()]);
-      console.log(formData);
+      if (!this.form.details[0].name_beh) {
+        this.alertModal('error', 'ข้อผิดพลาด', 'กรุณากรอกชื่อความประพฤติ', true);
+        return;
+      }
 
-      await callApi.saveDetailBehaviorAndDeductBehaviorScore(formData).then(res => {
-        console.log("API Response:", res);
-        if (res && res.code === 0) {
-          alert("บันทึกข้อมูลสำเร็จ!");
+      if (!this.listStudents || this.listStudents.length === 0) {
+        setTimeout(() => {
+          this.alertModal(
+            'error',
+            'ข้อผิดพลาด',
+            'กรุณาค้นหานักเรียนก่อนบันทึกข้อมูล',
+            true
+          );
+        }, 500);
+        return;
+      }
+      if (!this.deductionScore || !this.incidentNote) {
+        setTimeout(() => {
+          this.alertModal(
+            'error',
+            'ข้อผิดพลาด',
+            'กรุณากรอกข้อมูลให้ครบถ้วน',
+            true
+          );
+        }, 500);
+        return;
+      }
+
+      try {
+        let res;
+        if (this.isEditing) {
+          const payload = {
+            id: this.form.main_id,
+            name_beh: this.form.details[0].name_beh,
+            score: this.deductionScore,
+            t_id: this.form.details[0].t_id,
+            evant: this.incidentNote,
+            Pic_1: this.previewImages[0] || null,
+            Pic_2: this.previewImages[1] || null,
+            Pic_3: this.previewImages[2] || null,
+            Pic_4: this.previewImages[3] || null,
+            Pic_5: this.previewImages[4] || null,
+            id_school: this.form.id_schools,
+            date: this.form.date
+          };
+
+          console.log('Payload:', payload);
+          res = await callApi.updateDeatilBehaviour({ behaviors: payload });
+        } else {
+          const formData = new FormData();
+          formData.append("t_id", this.getStore().setAuth().id);
+          formData.append("evant", this.incidentNote);
+          formData.append("deductionScore", this.deductionScore);
+          formData.append("name_beh", this.form.details[0].name_beh);
+          formData.append("date", this.form.date);
+
+          const students = this.listStudents.map(student => ({
+            id: student.id,
+            name: student.name_stu,
+            id_school: student.id_school,
+          }));
+          formData.append("students", JSON.stringify(students));
+
+          if (this.files && this.files.length > 0) {
+            this.files.forEach((file, index) => {
+              formData.append(`images[${index + 1}]`, file);
+            });
+          }
+          res = await callApi.saveDetailBehaviorAndDeductBehaviorScore(formData);
+        }
+
+        if (res.code === 0) {
+          if (this.isEditing) {
+            this.alertModal('loading', 'กำลังเเก้ไขข้อมูล กรุณารอสักครู่....')
+            setTimeout(() => {
+              this.alertModal(
+                'success',
+                'สำเร็จ',
+                'เเก้ไขข้อมูลสำเร็จ',
+                true
+              );
+            }, 500);
+          } else {
+            this.alertModal('loading', 'กำลังบันทึกข้อมูล กรุณารอสักครู่....')
+            setTimeout(() => {
+              this.alertModal(
+                'success',
+                'สำเร็จ',
+                'บันทึกข้อมูลสำเร็จ',
+                true
+              );
+            }, 500);
+          }
           this.closeModal();
-          return this.getDeatilBehaviour();
+          this.getMainBehaviour();
         } else {
           alert(res.message || "เกิดข้อผิดพลาด");
         }
-      }).catch(err => {
+      } catch (err) {
         console.error("Error saving behavior:", err);
         alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-      });
+      }
     }
+
   }
 };
 </script>

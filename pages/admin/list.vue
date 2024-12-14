@@ -137,6 +137,10 @@ export default {
             },
         };
     },
+    setup() {
+        const swal = getCurrentInstance().appContext.config.globalProperties;
+        return { swal }
+    },
     mounted() {
         let auth = this.getStore().setAuth()
 
@@ -200,6 +204,7 @@ export default {
                     type: this.formType === 'behavior' ? 1 : 2,
                     score: this.form.score
                 };
+                this.alertModal('loading', 'กรุณารอสักครู่....')
                 const response = await apiMethod(payload);
 
                 if (response && response.code === 0) {

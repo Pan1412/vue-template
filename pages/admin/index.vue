@@ -6,19 +6,21 @@
                     <div class="row">
                         <div class="col">
 
-                            <div align="left">
+                            <!-- <div align="left">
                                 <button class="btn btn-danger btn-sm" @click="gotoPage('')">
                                     <Icon name="ep:refresh-left" style="padding: 0 0; margin: 0 0; font-size: 1rem;"
                                         class="fm-kanit" />
                                     กลับหน้าก่อน
                                 </button>
-                            </div>
+                            </div> -->
 
                             <div class="mt-3">
                                 <div class="d-flex">
+                                    <label for="" class="mt-2 w-10" style="margin-right: -1%;">วันที่</label>
+                                    <input type="date" id="date" class="form-control w-50" v-model="dateSearch" />
                                     <label for="" class="mt-2 w-10" style="margin-right: -1%;">ชั้นเรียน</label>
-                                    <select class="form-select w-50" aria-label="Default select example" v-model="classSearch"
-                                        @change="vcCheck()">
+                                    <select class="form-select w-50" aria-label="Default select example"
+                                        v-model="classSearch" @change="vcCheck()">
                                         <option value=""></option>
                                         <option value="1">ม.1</option>
                                         <option value="2">ม.2</option>
@@ -30,9 +32,9 @@
                                     </select>
 
 
-                                    <label for="" class="mt-2 w-10 ms-3" style="margin-right: -2%;">ห้อง/ปี</label>
-                                    <select class="form-select w-50" aria-label="Default select example" v-model="roomSearch"
-                                        @change="getStudent">
+                                    <label for="" class="mt-2 w-10 ms-3" style="margin-right:0%;">ห้อง/ปี</label>
+                                    <select class="form-select w-50" aria-label="Default select example"
+                                        v-model="roomSearch" @change="getStudent">
                                         <option :value="room" v-for=" room in roomList">{{ room }}</option>
                                     </select>
 
@@ -72,7 +74,8 @@
                                                     <select class="form-select form-select-sm w-100"
                                                         v-model="list.selectedBehavior">
                                                         <option value="" disabled selected>เลือกการหักคะแนน</option>
-                                                        <option v-for="item in listTypeBehaviour" :key="item.id" :value="item">
+                                                        <option v-for="item in listTypeBehaviour" :key="item.id"
+                                                            :value="item">
                                                             {{ item.name_beh }}
                                                         </option>
                                                     </select>
@@ -149,7 +152,14 @@ export default {
 
         async searchStudent() {
             if (this.classSearch === '' || this.roomSearch === '') {
-                alert('กรุณาระบุระดับชั้นและห้องให้ครบถ้วน');
+                setTimeout(() => {
+                    this.alertModal(
+                        'error',
+                        'ข้อผิดพลาด',
+                        'กรุณาระบุระดับชั้นและห้องให้ครบถ้วน',
+                        true
+                    );
+                }, 500);
                 return;
             }
 
@@ -197,7 +207,14 @@ export default {
             });
 
             if (deductionRequests.length === 0) {
-                alert('กรุณาเลือกการหักคะแนนอย่างน้อยหนึ่งรายการ');
+                setTimeout(() => {
+                    this.alertModal(
+                        'error',
+                        'ข้อผิดพลาด',
+                        'กรุณาเลือกการหักคะแนนอย่างน้อยหนึ่งรายการ',
+                        true
+                    );
+                }, 500);
                 return;
             }
             try {
@@ -246,14 +263,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 body {
-  font-family: "__font_pwks_kanit";
-  background-image: url("assets/img/bg_school.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  /* background-color: #ececec; */
+    font-family: "__font_pwks_kanit";
+    background-image: url("assets/img/bg_school.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    /* background-color: #ececec; */
 }
 
 .thead-bg {

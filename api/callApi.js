@@ -4,7 +4,7 @@ export default {
     getInfoClubUser: data => {
         return axios.api.post('/auth/get-info-club', data).then(response => response.data);
     },
-    
+
     gettypeBehaviorStudent: () => {
         return axios.api.get('/behavior/get-type-behavior').then(response => response.data);
     },
@@ -52,13 +52,13 @@ export default {
     deleteBehavior: (data) => {
         return axios.api.post('/behavior/remove-behavior', data).then((response) => response.data);
     },
-    
+
     deleteVirtue: (data) => {
         return axios.api.post('/behavior/remove-virtue', data).then((response) => response.data);
     },
 
-    getDeatilBehaviour: () => {
-        return axios.api.get('/behavior/get-detail-behavior').then(response => response.data);
+    getMainBehaviour: () => {
+        return axios.api.get('/behavior/get-Main-behavior').then(response => response.data);
     },
 
     updateDeatilBehaviour: (data) => {

@@ -34,7 +34,7 @@
                                             <td>{{ index + 1 }}</td>
                                             <td><b>{{ behavior.name_beh }}</b></td>
                                             <td>
-                                                <p class="p-link-target">{{ formatDate(behavior.date) }}</p>
+                                                <p class="p-link-target">{{ formatDate(behavior.created_at) }}</p>
                                             </td>
                                             <td>
                                                 <p class="p-link-target">{{ behavior.score }}</p>
@@ -69,8 +69,6 @@ export default {
 
     async mounted() {
         let auth = this.getStore().setAuth()
-        console.log(auth);
-
         if (auth) {
             this.studentId = auth.id_school
             let classCheck = auth.class == 'vc' ? `ระดับชั้นปประกาศนียบัตรวิชาชีพชั้นปีที่ ${auth.room}` : `ระดับชั้นมัธยมศึกษาปีที่ ${auth.class} ห้อง ${auth.room}`
@@ -85,7 +83,7 @@ export default {
         formatDate(dateString) {
             const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); 
+            const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = String(date.getFullYear()).slice(-2);
             return `${day}/${month}/${year}`;
         },
@@ -113,7 +111,6 @@ export default {
                 if (res.code === 0) {
                     this.behaviorDetails = res.data;
                     console.log(this.behaviorDetails);
-                    
                 } else {
                     console.log('ไม่พบข้อมูล');
                 }
