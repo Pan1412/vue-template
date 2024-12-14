@@ -147,16 +147,16 @@ export default {
                 {
                     headName: 'เมนูหลัก',
                     subMenu: [
-                        { subMenuName: 'รายชื่อนักเรียน', link: '/main', icon: 'material-symbols:list-alt-check-outline', permission: '' },
-                        { subMenuName: 'บันทึกคดี/พิพาท', link: '/profile', icon: 'hugeicons:justice-scale-01', permission: '' },
-                        { subMenuName: 'รายการพฤติกรรม', link: '/profile', icon: 'uis:layer-group', permission: '' },
+                        { subMenuName: 'รายชื่อนักเรียน', link: '/admin', icon: 'material-symbols:list-alt-check-outline', permission: '' },
+                        { subMenuName: 'บันทึกคดี/พิพาท', link: '/admin/manage', icon: 'hugeicons:justice-scale-01', permission: '' },
+                        { subMenuName: 'รายการพฤติกรรม', link: '/admin/list', icon: 'uis:layer-group', permission: '' },
                     ]
                 },
                 {
                     headName: 'รายงาน',
                     subMenu: [
-                        { subMenuName: 'พฤติกรรมรายบุคคล', link: '/teacherConsult', icon: 'mdi:file', permission: '' },
-                        { subMenuName: 'ลำดับคะแนน', link: '/teacherSubject', icon: 'mdi:file', permission: '' },
+                        { subMenuName: 'พฤติกรรมรายบุคคล', link: '/', icon: 'mdi:file', permission: '' },
+                        { subMenuName: 'ลำดับคะแนน', link: '/', icon: 'mdi:file', permission: '' },
                     ]
                 },
 
@@ -187,11 +187,7 @@ export default {
     // },
 
     async mounted() {
-
         this.menu = this.listMenuCheck
-
-        console.log(this.menu);
-
         // this.profile.prefixTea = this.getStore().setAuth().prefix_name
         // this.profile.firstName = this.getStore().setAuth().first_name
         // this.profile.lastName = this.getStore().setAuth().last_name
