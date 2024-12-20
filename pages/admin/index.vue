@@ -57,6 +57,7 @@
                                                 <th class="thead-bg">ห้องเรียน</th>
                                                 <th class="thead-bg">เลขที่</th>
                                                 <th class="thead-bg">คะเเนนความประพฤติ</th>
+                                                <th class="thead-bg">ประวัติ</th>
                                                 <th class="thead-bg"></th>
                                             </tr>
                                         </thead>
@@ -69,15 +70,27 @@
                                                     <label v-else>ม.{{ list.class }}/{{ list.room }}</label>
                                                 </td>
                                                 <td>{{ list.student_num }}</td>
-                                                <td>{{ list.score }}</td>
+                                                <td>{{ list.student_score }}</td>
+                                                <td style="color: red;">{{ list.name_beh ? list.name_beh : '-' }}</td>
                                                 <td>
                                                     <select class="form-select form-select-sm w-100"
                                                         v-model="list.selectedBehavior">
                                                         <option value="" disabled selected>เลือกการหักคะแนน</option>
-                                                        <option v-for="item in listTypeBehaviour" :key="item.id"
-                                                            :value="item">
-                                                            {{ item.name_beh }}
-                                                        </option>
+                                                        <optgroup label="ความประพฤติ">
+                                                            <option
+                                                                v-for="item in listTypeBehaviour.filter(item => item.type === 1)"
+                                                                :key="item.id" :value="item">
+                                                                {{ item.name_beh }}
+                                                            </option>
+                                                        </optgroup>
+
+                                                        <optgroup label="คุณธรรม">
+                                                            <option
+                                                                v-for="item in listTypeBehaviour.filter(item => item.type === 2)"
+                                                                :key="item.id" :value="item">
+                                                                {{ item.name_beh }}
+                                                            </option>
+                                                        </optgroup>
                                                     </select>
                                                 </td>
                                             </tr>
@@ -129,14 +142,15 @@ export default {
         }
     },
 
-    mounted() {
+    async mounted() {
         let auth = this.getStore().setAuth()
 
         if (auth) {
             this.tId = auth.id
         }
 
-        this.getDaTaTypeBehaviour()
+        await this.getDaTaTypeBehaviour();
+        await this.getTypeDetailBehaviorStudent();
     },
 
     methods: {
@@ -168,13 +182,13 @@ export default {
             this.dataSearch.name = this.nameSearch;
             this.dataSearch.tId = this.tId;
 
-            await callApi.getStudentForBehaviorScore({ ...this.dataSearch })
-                .then(res => {
-                    this.listStudent = res.result.map(student => ({
-                        ...student,
-                        selectedBehavior: ''
-                    }));
-                })
+            await callApi.getStudentForBehaviorScore({ ...this.dataSearch }).then(res => {
+                this.listStudent = res.result.map(student => ({
+                    ...student,
+                    selectedBehavior: ''
+                }));
+                console.log(this.listStudent);
+            })
                 .catch(err => {
                     console.error('Error:', err);
                 });

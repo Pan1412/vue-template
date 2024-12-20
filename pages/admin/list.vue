@@ -237,22 +237,22 @@ export default {
         },
 
         async deleteBehavior(id) {
-            await callApi.deleteBehavior({ id })
-                .then(res => {
-                    if (res.code === 0) {
-                        setTimeout(() => {
-                            this.alertModal(
-                                'success',
-                                'สำเร็จ',
-                                'ลบข้อมูลรายการความประพฤติสำเร็จ',
-                                true
-                            );
-                        }, 500);
-                        this.getDaTaTypeBehaviour();
-                    } else {
-                        alert(res.message || 'เกิดข้อผิดพลาด');
-                    }
-                })
+            await callApi.deleteBehavior({ id }).then(res => {
+                this.alertModal('loading', 'กรุณารอสักครู่....')
+                if (res.code === 0) {
+                    setTimeout(() => {
+                        this.alertModal(
+                            'success',
+                            'สำเร็จ',
+                            'ลบข้อมูลรายการความประพฤติสำเร็จ',
+                            true
+                        );
+                    }, 500);
+                    this.getDaTaTypeBehaviour();
+                } else {
+                    alert(res.message || 'เกิดข้อผิดพลาด');
+                }
+            })
                 .catch(err => {
                     console.error(err);
                     alert('ไม่สามารถลบข้อมูลพฤติกรรมได้');
@@ -260,22 +260,22 @@ export default {
         },
 
         async deleteVirtue(id) {
-            await callApi.deleteVirtue({ id })
-                .then(res => {
-                    if (res.code === 0) {
-                        setTimeout(() => {
-                            this.alertModal(
-                                'success',
-                                'สำเร็จ',
-                                'ลบข้อมูลรายการคุณธรรมสำเร็จ',
-                                true
-                            );
-                        }, 500);
-                        this.getDaTaTypeBehaviour();
-                    } else {
-                        alert(res.message || 'เกิดข้อผิดพลาด');
-                    }
-                })
+            await callApi.deleteVirtue({ id }).then(res => {
+                this.alertModal('loading', 'กรุณารอสักครู่....')
+                if (res.code === 0) {
+                    setTimeout(() => {
+                        this.alertModal(
+                            'success',
+                            'สำเร็จ',
+                            'ลบข้อมูลรายการคุณธรรมสำเร็จ',
+                            true
+                        );
+                    }, 500);
+                    this.getDaTaTypeBehaviour();
+                } else {
+                    alert(res.message || 'เกิดข้อผิดพลาด');
+                }
+            })
                 .catch(err => {
                     console.error(err);
                     alert('ไม่สามารถลบข้อมูลคุณธรรมได้');
