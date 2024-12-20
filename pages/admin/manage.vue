@@ -10,30 +10,37 @@
               </div>
               <div class="mt-2">
                 <div class="table-responsive mt-3">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th style="text-align: left;">รายการความประพฤติ</th>
-                        <th></th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listDetailTypeBehaviour" :key="item.id">
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ item.details[0].name_beh }}</td>
-                        <td>
-                          <button class="btn btn-warning btn-sm"
-                            @click="openModalForEdit(item)">รายละเอียด&แก้ไข</button>
-                        </td>
-                        <td>
-                          <button class="btn btn-danger btn-sm"
-                            @click="deleteDeatilOneBehaviour(item.main_id)">ลบ</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div v-if="listDetailTypeBehaviour.length > 0">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th style="text-align: left;">รายการความประพฤติ</th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item, index) in listDetailTypeBehaviour" :key="item.id">
+                          <td>{{ index + 1 }}</td>
+                          <td>{{ item.details[0].name_beh }}</td>
+                          <td>
+                            <button class="btn btn-warning btn-sm"
+                              @click="openModalForEdit(item)">รายละเอียด&แก้ไข</button>
+                          </td>
+                          <td>
+                            <button class="btn btn-danger btn-sm"
+                              @click="deleteDeatilOneBehaviour(item.main_id)">ลบ</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div v-else>
+                    <div class="text-center mt-3">
+                      <p>ไม่พบรายการความประพฤติ</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -57,10 +64,16 @@
             <label for="studentId" class="form-label">เลขประจำตัวนักเรียน</label>
             <input type="text" class="form-control" id="studentId" v-model="studentId"
               placeholder="กรอกเลขประจำตัวนักเรียน" />
-            <button type="button" class="btn btn-primary mt-2" @click="searchStudent">ค้นหา</button>
+            <div v-if="isEditing">
+              <button type="button" class="btn btn-primary mt-2 disabled" @click="searchStudent">ค้นหา</button>
+            </div>
+            <div v-if="!isEditing">
+              <button type="button" class="btn btn-primary mt-2" @click="searchStudent">ค้นหา</button>
+            </div>
           </div>
-          <div v-if="listStudents.length" class="mt-3">
-            <h5>รายการนักเรียนที่ค้นหาได้:</h5>
+          <h5>รายการนักเรียนที่ค้นหาได้:</h5>
+          <h5 v-if="isEditing" style="color: red;">***ไม่สามารถเปลี่ยนเเปลงข้อมูลส่วนนักเรียนได้***</h5>
+          <div v-if="listStudents.length" class="mt-3 scrollable-table">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -236,6 +249,7 @@ export default {
       this.form = { ...item };
       this.studentId = Array.isArray(item.id_schools) ? item.id_schools : [item.id_schools];
       this.form.date = item.date || '';
+      this.form.id_schools = [...this.studentId];
 
       if (this.studentId && this.studentId.length) {
         this.searchStudent();
@@ -298,6 +312,10 @@ export default {
 
       const studentIds = Array.isArray(this.studentId) ? this.studentId : [this.studentId];
 
+      this.listStudents = this.listStudents.filter(
+        student => !studentIds.includes(String(student.id_school))
+      );
+
       for (let id of studentIds) {
         const alreadyExists = this.listStudents.some(
           student => String(student.id_school) === String(id)
@@ -317,25 +335,24 @@ export default {
 
         const data = { id_school: id };
 
+        console.log(data);
+        console.log('id', this.studentId)
         try {
-          const res = await callApi.searchStudent(data);
-
-          if (res.code === 0) {
-            if (res.data.length) {
-              this.listStudents = [...this.listStudents, ...res.data];
-            } else {
-              setTimeout(() => {
-                this.alertModal(
-                  'info',
-                  'ข้อมูล',
-                  `ไม่พบข้อมูลนักเรียนสำหรับรหัส ${id}`,
-                  false
-                );
-              }, 500);
-            }
+          const res = await callApi.searchStudent({ id_school: id });
+          if (res.code === 0 && res.data.length) {
+            this.listStudents = [...this.listStudents, ...res.data];
+            this.studentId = this.listStudents.map(student => student.id_school);
+            this.form.id_schools = [...this.studentId];
           } else {
-            console.error(`Error response code ${res.code} for student ${id}:`, res.message);
-          }
+            setTimeout(() => {
+              this.alertModal(
+                'info',
+                'ข้อมูล',
+                `ไม่พบข้อมูลนักเรียนสำหรับรหัส ${id}`,
+                false
+              );
+            }, 500);
+          } ""
         } catch (err) {
           console.error(`Error fetching student ${id}:`, err);
           setTimeout(() => {
@@ -384,7 +401,7 @@ export default {
 
     async saveDetailBehaviorAndDeductBehaviorScore() {
       console.log(this.form);
-      
+
       if (!this.form.details[0].name_beh) {
         this.alertModal('error', 'ข้อผิดพลาด', 'กรุณากรอกชื่อความประพฤติ', true);
         return;
@@ -427,10 +444,10 @@ export default {
             Pic_3: this.previewImages[2] || null,
             Pic_4: this.previewImages[3] || null,
             Pic_5: this.previewImages[4] || null,
-            id_school: this.form.id_schools,
+            id_school: this.studentId,
             date: this.form.date
           };
-
+          console.log('id', this.studentId)
           console.log('Payload:', payload);
           res = await callApi.updateDeatilBehaviour({ behaviors: payload });
         } else {
@@ -527,5 +544,11 @@ export default {
   border-radius: 8px;
   width: 70rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin-top: 2rem;
+}
+
+.scrollable-table {
+  max-height: 200px;
+  overflow-y: auto;
 }
 </style>
