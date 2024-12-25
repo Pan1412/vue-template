@@ -5,8 +5,13 @@
         <div class="block-bg-main">
           <div class="row">
             <div class="col bgbox2">
-              <div align="right">
+
+              <div class="section-header">
+                <h4>บันทึกคดี/พิพาท</h4>
                 <button class="btn btn-success btn-sm" @click="openModal('behavior')">เพิ่ม</button>
+              </div>
+              <div align="right">
+                
               </div>
               <div class="mt-2">
                 <div class="table-responsive mt-3">
@@ -26,7 +31,7 @@
                           <td>{{ item.details[0].name_beh }}</td>
                           <td>
                             <button class="btn btn-warning btn-sm"
-                              @click="openModalForEdit(item)">รายละเอียด&แก้ไข</button>
+                              @click="openModalForEdit(item)">รายละเอียด</button>
                           </td>
                           <td>
                             <button class="btn btn-danger btn-sm"
@@ -52,7 +57,7 @@
     <!-- สำหรับเพิ่มข้อมูลใหม่ -->
     <div v-if="isModalOpen" class="modal-overlay">
       <div class="modal-show">
-        <h3 class="text-left">{{ isEditing ? 'แก้ไขความประพฤติ' : 'บันทึกความประพฤติ' }}</h3>
+        <h3 class="text-left">{{ isEditing ? 'รายละเอียดความประพฤติ' : 'บันทึกความประพฤติ' }}</h3>
         <form @submit.prevent="saveDetailBehaviorAndDeductBehaviorScore">
 
           <div class="mb-3">
@@ -97,7 +102,12 @@
                   <td>{{ student.room }}</td>
                   <td>{{ student.score }}</td>
                   <td>
-                    <button class="btn btn-danger btn-sm" @click="removeStudent(index)">ลบ</button>
+                    <div v-if="isEditing">
+                      <button class="btn btn-danger btn-sm disabled" @click="removeStudent(index)">ลบ</button>
+                    </div>
+                    <div v-if="!isEditing">
+                      <button class="btn btn-danger btn-sm" @click="removeStudent(index)">ลบ</button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -129,7 +139,12 @@
             </div>
           </div>
           <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-success">{{ isEditing ? 'บันทึกการแก้ไข' : 'บันทึกข้อมูล' }}</button>
+            <div v-if="isEditing">
+              <button type="submit" class="btn btn-success disabled">{{ isEditing ? 'บันทึกการแก้ไข' : 'บันทึกข้อมูล' }}</button>
+            </div>
+            <div v-if="!isEditing">
+              <button type="submit" class="btn btn-success">{{ isEditing ? 'บันทึกการแก้ไข' : 'บันทึกข้อมูล' }}</button>
+            </div>
             <button type="button" class="btn btn-secondary" @click="closeModal">ปิด</button>
           </div>
         </form>
@@ -141,6 +156,7 @@
 
 <script>
 import callApi from '../api/callApi';
+import moment from 'moment';
 export default {
   data() {
     return {
@@ -550,5 +566,12 @@ export default {
 .scrollable-table {
   max-height: 200px;
   overflow-y: auto;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 </style>
