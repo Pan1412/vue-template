@@ -80,4 +80,7 @@ export default {
     saveDetailBehaviorAndDeductBehaviorScore: data => {
         return axios.api.post('/behavior/get-insert-and-deduction-behavior-score', data).then(response => response.data);
     },
+    deleteBehaviorInList: (data) => {
+        return axios.api.post('/behavior/remove-behavior-in-list', data).then((response) => response.data);
+    },
 }
