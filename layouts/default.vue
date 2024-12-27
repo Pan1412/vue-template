@@ -35,7 +35,7 @@
             <NavBarHeader v-if="!checkPrint" />
 
             <div class="position-box-main">
-                <div v-if="checkLogin && this.getStore().setCheckSideMenu() && !checkPrint">
+                <div v-if="checkLogin && this.getStore().setCheckSideMenu() && !checkPrint && checkDevice() !== 'mobile'">
                     <SubMenuNav />
                 </div>
 
