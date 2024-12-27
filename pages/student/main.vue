@@ -110,7 +110,6 @@ export default {
                 const res = await callApi.getTypeDetailBehaviorStudent(data);
                 if (res.code === 0) {
                     this.behaviorDetails = res.data;
-                    console.log(this.behaviorDetails);
                 } else {
                     console.log('ไม่พบข้อมูล');
                 }

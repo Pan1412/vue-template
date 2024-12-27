@@ -99,24 +99,40 @@
                           <div
                             v-for="(behavior, index) in list.detail_behaviors"
                             :key="behavior.detail_beh_id"
-                            style="color: red; display: flex; align-items: center"
+                            :style="{
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: behavior.name_beh ? '0.5rem 1rem' : '0',
+                              borderRadius: '50px',
+                              backgroundColor: behavior.name_beh
+                                ? behavior.type === 1
+                                  ? '#e84e40'
+                                  : behavior.type === 2
+                                  ? 'green'
+                                  : behavior.type === 3
+                                  ? 'purple'
+                                  : 'gray'
+                                : 'transparent',
+                              color: behavior.name_beh ? 'white' : 'black',
+                              fontSize: '0.9rem',
+                              marginTop: '0.5rem'
+                            }"
                           >
-                            {{ behavior.name_beh ? behavior.name_beh : "-" }}
+                            {{ behavior.name_beh ? behavior.name_beh : "" }}
                             <div
                               style="padding-left: 1rem; cursor: pointer"
+                              v-if="behavior.name_beh"
                               @click="deleteBehaviorInList(behavior.detail_beh_id)"
                             >
-                              <div >
-                                <img
-                                  v-if="index == 0"
-                                  src="/assets/image/remove.png"
-                                  alt="Remove"
-                                  style="width: 15px; height: 15px"
-                                />
-                              </div>
+                              <img
+                                src="/assets/image/remove.png"
+                                alt="Remove"
+                                style="width: 15px; height: 15px"
+                              />
                             </div>
                           </div>
                         </td>
+
                         <td>
                           <select
                             class="form-select form-select-sm w-100"
@@ -206,6 +222,23 @@ export default {
       this.tId = auth.id;
     }
 
+    const today = new Date().toISOString().split("T")[0];
+    this.dateSearch = today;
+
+    const params = new URLSearchParams(window.location.search);
+    this.classSearch = params.get("classSearch") || "1";
+    this.roomSearch = params.get("roomSearch") || "1";
+
+    this.dataSearch = {
+      class: this.classSearch,
+      room: this.roomSearch,
+      name: "",
+      date: this.dateSearch,
+      tId: this.tId,
+    };
+
+    await this.searchStudent();
+
     await this.getDaTaTypeBehaviour();
     await this.getTypeDetailBehaviorStudent();
   },
@@ -238,9 +271,6 @@ export default {
       this.dataSearch.date = this.dateSearch;
       this.dataSearch.name = this.nameSearch || "";
       this.dataSearch.tId = this.tId;
-
-      console.log(this.dataSearch);
-
       try {
         const res = await callApi.getStudentForBehaviorScore({ ...this.dataSearch });
         this.listStudent = res.result.map((student) => ({
@@ -283,9 +313,6 @@ export default {
             type: selectedBehavior.type,
             date: formattedDate,
           };
-
-          console.log(requestData);
-          console.log("selectedBehavior", selectedBehavior);
           deductionRequests.push(requestData);
         }
       });
@@ -325,7 +352,6 @@ export default {
             const result = await callApi.insertDetailsTypeBehaviorScore(data);
 
             if (result.code === 0) {
-              console.log(result);
               setTimeout(() => {
                 this.alertModal(
                   "success",
@@ -333,6 +359,8 @@ export default {
                   "ทำการบันทึกคะเเนนความประพฤติสำเร็จ",
                   true
                 );
+                const queryString = `/admin/?classSearch=${this.dataSearch.class}&roomSearch=${this.dataSearch.room}`;
+                window.location.href = queryString;
               }, 500);
             } else {
               throw new Error("Failed to insert behavior details");
@@ -405,5 +433,71 @@ body {
 
 .w-10 {
   width: 20% !important;
+}
+
+@media (max-width: 768px) {
+  /* สำหรับหน้าจอที่มีขนาดเล็กกว่า 768px (มือถือ, แท็บเล็ต) */
+  .w-10 {
+    width: 25% !important; /* เปลี่ยนความกว้างของ label */
+  }
+
+  .form-control,
+  .form-select {
+    width: 100% !important; /* ทำให้ input และ select ขยายเต็มความกว้าง */
+  }
+
+  .btn {
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+
+  .table-responsive {
+    margin-top: 20px;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .thead-bg {
+    font-size: 0.9rem;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-select,
+  .form-control {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .w-10 {
+    width: 20% !important;
+  }
+
+  .d-flex {
+    align-items: flex-start;
+  }
+
+  .form-control,
+  .form-select {
+    width: 100% !important;
+  }
+
+  .table-responsive {
+    margin-top: 10px;
+  }
+
+  .btn {
+    width: 100% !important;
+  }
+
+  .ms-3 {
+    margin-left: 0rem !important;
+  }
 }
 </style>
