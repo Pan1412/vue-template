@@ -13,20 +13,25 @@
                                 </button>
                             </div> -->
 
-              <div class="mt-3">
-                <div class="d-flex">
-                  <label for="" class="mt-2 w-10" style="margin-right: -1%">วันที่</label>
+              <div class="row align-items-center g-3">
+                <div class="col-auto">
+                  <label class="col-form-label" for="date">วันที่</label>
+                </div>
+                <div class="col-auto">
                   <input
                     type="date"
                     id="date"
-                    class="form-control w-50"
+                    name="date"
+                    class="form-control"
                     v-model="dateSearch"
                   />
-                  <label for="" class="mt-2 w-10" style="margin-right: -1%"
-                    >ชั้นเรียน</label
-                  >
+                </div>
+                <div class="col-auto">
+                  <label class="col-form-label" for="">ชั้นเรียน</label>
+                </div>
+                <div class="col-auto">
                   <select
-                    class="form-select w-50"
+                    class="form-select"
                     aria-label="Default select example"
                     v-model="classSearch"
                     @change="vcCheck()"
@@ -40,41 +45,43 @@
                     <option value="6">ม.6</option>
                     <option value="vc">ปวช.</option>
                   </select>
-
-                  <label for="" class="mt-2 w-10 ms-3" style="margin-right: 0%"
-                    >ห้อง/ปี</label
-                  >
+                </div>
+                <div class="col-auto">
+                  <label class="col-form-label" for="">ห้อง/ปี</label>
+                </div>
+                <div class="col-auto">
                   <select
-                    class="form-select w-50"
+                    class="form-select"
                     aria-label="Default select example"
                     v-model="roomSearch"
                     @change="getStudent"
                   >
                     <option :value="room" v-for="room in roomList">{{ room }}</option>
                   </select>
-
                   <!-- <input v-model="nameSearch" type="text" class="form-control input-width-student ms-3 w-50"
                                         placeholder="กรอกชื่อนักเรียน" aria-label="Username" aria-describedby="basic-addon1"> -->
-
+                </div>
+                <div class="col-auto">
                   <button
-                    class="btn btn-primary btn-sm ms-3 w-50 fm-kanit"
+                    class="btn btn-primary fm-kanit"
                     @click="searchStudent"
-                  >
+                  > <Icon name="mingcute:search-2-line" class="icon-status" />
                     ค้นหา
                   </button>
                 </div>
+
               </div>
 
               <div class="mt-2">
-                <div class="table-responsive mt-3">
+                <div class="table-responsive mt-3 fm-IBM">
                   <table class="table table-hover">
                     <thead>
                       <tr>
                         <th class="thead-bg" style="width: 2%">#</th>
                         <th class="thead-bg" style="text-align: left">ชื่อ-นามสกุล</th>
-                        <th class="thead-bg">ห้องเรียน</th>
-                        <th class="thead-bg">เลขที่</th>
-                        <th class="thead-bg">คะเเนนความประพฤติ</th>
+                        <th class="thead-bg d-none d-sm-table-cell">ห้องเรียน</th>
+                        <th class="thead-bg d-none d-sm-table-cell">เลขที่</th>
+                        <th class="thead-bg">คะเเนน</th>
                         <th class="thead-bg" style="width: 10rem">ประวัติ</th>
                         <th class="thead-bg"></th>
                       </tr>
@@ -89,21 +96,21 @@
                         <td>
                           {{ list.prefix_stu }}{{ list.name_stu }} {{ list.surname_stu }}
                         </td>
-                        <td>
+                        <td class="d-none d-sm-table-cell">
                           <label v-if="list.class === 'vc'">ปวช.{{ list.room }}</label>
                           <label v-else>ม.{{ list.class }}/{{ list.room }}</label>
                         </td>
-                        <td>{{ list.student_num }}</td>
+                        <td class="d-none d-sm-table-cell">{{ list.student_num }}</td>
                         <td>{{ list.student_score }}</td>
                         <td>
-                          <div
+                          <div 
                             v-for="(behavior, index) in list.detail_behaviors"
                             :key="behavior.detail_beh_id"
-                            style="color: red; display: flex; align-items: center"
+                            
                           >
                             {{ behavior.name_beh ? behavior.name_beh : "-" }}
                             <div
-                              style="padding-left: 1rem; cursor: pointer"
+                              style="padding-left: 0.5rem; cursor: pointer"
                               @click="deleteBehaviorInList(behavior.detail_beh_id)"
                             >
                               <div >
@@ -123,7 +130,7 @@
                             v-model="list.selectedBehavior"
                           >
                             <option value="" disabled selected>เลือกการหักคะแนน</option>
-                            <optgroup label="ความประพฤติ">
+                            <optgroup label="ความประพฤติลบ">
                               <option
                                 v-for="item in listTypeBehaviour.filter(
                                   (item) => item.type === 1
@@ -134,7 +141,7 @@
                                 {{ item.name_beh }}
                               </option>
                             </optgroup>
-                            <optgroup label="คุณธรรม">
+                            <optgroup label="ความประพฤติบวก">
                               <option
                                 v-for="item in listTypeBehaviour.filter(
                                   (item) => item.type === 2
@@ -164,6 +171,7 @@
             </div>
           </div>
         </div>
+        <br><br><br>
       </div>
     </div>
   </div>
