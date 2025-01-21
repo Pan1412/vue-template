@@ -4,23 +4,24 @@
       <div class="block-main">
         <div class="block-bg-main">
           <div class="row">
-            <div class="col bgbox2">
-              <div class="section-header">
-                <h4>รายการความประพฤติ</h4>
+            <div class="col bgbox3">
+              <div class="section-header" style="margin-top:-1rem;   margin-bottom: -1.5rem;">
+                <h4>รายการความประพฤติลบ</h4>
                 <button class="btn btn-success btn-sm" @click="openModal('behavior')">
-                  เพิ่ม
+                  <Icon name="material-symbols:add-rounded"
+                  style="padding: 0 0; margin: 0 0; font-size: 1.2rem;" class="fm-kanit" /> เพิ่ม
                 </button>
               </div>
               <div class="mt-2">
                 <div class="table-responsive mt-3">
-                  <table class="table table-hover">
+                  <table class="table table-hover fm-IBM">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th style="text-align: left">รายการความประพฤติ</th>
-                        <th>คะแนน</th>
-                        <th>แก้ไข</th>
-                        <th>ลบ</th>
+                        <th style="width:40px;">#</th>
+                        <th style="text-align: left">รายการ</th>
+                        <th style="width:100px;">คะแนน</th>
+                        <th></th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -28,7 +29,7 @@
                         <td>{{ index + 1 }}</td>
                         <td>{{ item.name_beh }}</td>
                         <td>{{ item.score }}</td>
-                        <td>
+                        <td class="text-nowrap" style="width: 1%;">
                           <button
                             class="btn btn-warning btn-sm"
                             @click="editItem(item, 'behavior')"
@@ -36,7 +37,7 @@
                             แก้ไข
                           </button>
                         </td>
-                        <td>
+                        <td class="text-nowrap" style="width: 1%;">
                           <button
                             class="btn btn-danger btn-sm"
                             @click="deleteBehavior(item.id)"
@@ -49,22 +50,26 @@
                   </table>
                 </div>
               </div>
-              <div class="section-header">
-                <h4>รายการคุณธรรม</h4>
+
+              <br><br>
+
+              <div class="section-header" style="margin-top:-1rem;   margin-bottom: -1.5rem;">
+                <h4>รายการความประพฤติชื่นชม</h4>
                 <button class="btn btn-success btn-sm" @click="openModal('virtue')">
-                  เพิ่ม
+                  <Icon name="material-symbols:add-rounded"
+                  style="padding: 0 0; margin: 0 0; font-size: 1.2rem;" class="fm-kanit" /> เพิ่ม
                 </button>
               </div>
               <div class="mt-2">
                 <div class="table-responsive mt-3">
-                  <table class="table table-hover">
+                  <table class="table table-hover fm-IBM">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th style="text-align: left">รายการคุณธรรม</th>
-                        <th>คะแนน</th>
-                        <th>แก้ไข</th>
-                        <th>ลบ</th>
+                        <th style="width:40px;">#</th>
+                        <th style="text-align: left">รายการ</th>
+                        <th style="width:100px;">คะแนน</th>
+                        <th></th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -72,7 +77,7 @@
                         <td>{{ index + 1 }}</td>
                         <td>{{ item.name_beh }}</td>
                         <td>{{ item.score }}</td>
-                        <td>
+                        <td class="text-nowrap" style="width: 1%;">
                           <button
                             class="btn btn-warning btn-sm"
                             @click="editItem(item, 'virtue')"
@@ -80,7 +85,7 @@
                             แก้ไข
                           </button>
                         </td>
-                        <td>
+                        <td class="text-nowrap" style="width: 1%;">
                           <button
                             class="btn btn-danger btn-sm"
                             @click="deleteVirtue(item.id)"
@@ -137,6 +142,7 @@
             </div>
           </div>
         </div>
+        <br><br><br>
       </div>
     </div>
   </div>
@@ -372,7 +378,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .modal-show h5 {

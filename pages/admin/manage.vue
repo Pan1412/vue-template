@@ -5,47 +5,35 @@
         <div class="block-bg-main">
           <div class="row">
             <div class="col bgbox2">
+
               <div class="section-header">
                 <h4>บันทึกคดี/พิพาท</h4>
-                <button class="btn btn-success btn-sm" @click="openModal('behavior')">
-                  เพิ่ม
-                </button>
+                <button class="btn btn-success btn-sm" @click="openModal('behavior')">เพิ่ม</button>
               </div>
               <div align="right"></div>
               <div class="mt-2">
                 <div class="table-responsive mt-3">
                   <div v-if="listDetailTypeBehaviour.length > 0">
-                    <table class="table table-hover">
+                    <table class="table table-hover fm-IBM">
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th style="text-align: left">รายการความประพฤติ</th>
+                          <th style="text-align: left;">รายการความประพฤติ</th>
                           <th></th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          v-for="(item, index) in listDetailTypeBehaviour"
-                          :key="item.id"
-                        >
+                        <tr v-for="(item, index) in listDetailTypeBehaviour" :key="item.id">
                           <td>{{ index + 1 }}</td>
                           <td>{{ item.details[0].name_beh }}</td>
                           <td>
-                            <button
-                              class="btn btn-warning btn-sm"
-                              @click="openModalForEdit(item)"
-                            >
-                              รายละเอียด
-                            </button>
+                            <button class="btn btn-warning btn-sm"
+                              @click="openModalForEdit(item)">รายละเอียด</button>
                           </td>
                           <td>
-                            <button
-                              class="btn btn-danger btn-sm"
-                              @click="deleteDeatilOneBehaviour(item.main_id)"
-                            >
-                              ลบ
-                            </button>
+                            <button class="btn btn-danger btn-sm"
+                              @click="deleteDeatilOneBehaviour(item.main_id)">ลบ</button>
                           </td>
                         </tr>
                       </tbody>
@@ -76,29 +64,13 @@
         <form @submit.prevent="saveDetailBehaviorAndDeductBehaviorScore">
           <div class="mb-3">
             <label for="studentId" class="form-label">ชื่อความประพฤติ</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="กรอกชื่อ"
-              required
-              v-model="form.details[0].name_beh"
-            />
+            <input type="text" class="form-control" placeholder="กรอกชื่อ" required
+              v-model="form.details[0].name_beh" />
             <label for="studentId" class="form-label">วันที่</label>
-            <input
-              type="date"
-              class="form-control"
-              placeholder="กรอกชื่อ"
-              required
-              v-model="form.date"
-            />
+            <input type="date" class="form-control" placeholder="กรอกชื่อ" required v-model="form.date" />
             <label for="studentId" class="form-label">เลขประจำตัวนักเรียน</label>
-            <input
-              type="text"
-              class="form-control"
-              id="studentId"
-              v-model="studentId"
-              placeholder="กรอกเลขประจำตัวนักเรียน"
-            />
+            <input type="text" class="form-control" id="studentId" v-model="studentId"
+              placeholder="กรอกเลขประจำตัวนักเรียน" />
             <div v-if="isEditing">
               <button
                 type="button"
@@ -116,7 +88,7 @@
           </div>
           <h5>รายการนักเรียนที่ค้นหาได้:</h5>
           <div v-if="listStudents.length" class="mt-3 scrollable-table">
-            <table class="table table-striped">
+            <table class="table table-striped fm-IBM">
               <thead>
                 <tr>
                   <th>#</th>
@@ -160,23 +132,12 @@
 
           <div class="mb-3">
             <label for="deductionScore" class="form-label">คะแนนที่จะทำการหัก</label>
-            <input
-              type="number"
-              class="form-control"
-              id="score"
-              v-model="deductionScore"
-              required
-            />
+            <input type="number" class="form-control" id="score" v-model="deductionScore" required />
           </div>
           <div class="mb-3">
             <label for="incidentNote" class="form-label">บันทึกเหตุการณ์</label>
-            <textarea
-              class="form-control"
-              id="incidentNote"
-              rows="4"
-              v-model="incidentNote"
-              placeholder="กรอกเหตุการณ์ที่ต้องการบันทึก"
-            ></textarea>
+            <textarea class="form-control" id="incidentNote" rows="4" v-model="incidentNote"
+              placeholder="กรอกเหตุการณ์ที่ต้องการบันทึก"></textarea>
           </div>
 
           <div class="mb-3">
@@ -632,6 +593,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top:-1rem;
   margin-bottom: 10px;
 }
+
 </style>

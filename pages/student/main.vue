@@ -19,25 +19,25 @@
                                 <thead>
                                     <tr>
                                         <th class="thead-bg" style="width: 3rem;">#</th>
-                                        <th class="thead-bg">รายการ</th>
                                         <th class="thead-bg">วันที่</th>
+                                        <th class="thead-bg">รายการ</th>
                                         <th class="thead-bg">คะแนน</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-if="score === 100">
-                                        <td colspan="3" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ
                                         </td>
                                     </tr>
                                     <template v-else>
                                         <tr v-for="(behavior, index) in behaviorDetails" :key="index">
                                             <td>{{ index + 1 }}</td>
-                                            <td><b>{{ behavior.name_beh }}</b></td>
+                                            <td><div class="p-link-target">{{ formatDate(behavior.created_at) }}</div></td>
                                             <td>
-                                                <p class="p-link-target">{{ formatDate(behavior.created_at) }}</p>
+                                                <b>{{ behavior.name_beh }}</b>
                                             </td>
                                             <td>
-                                                <p class="p-link-target">{{ behavior.score }}</p>
+                                                <div class="p-link-target">{{ behavior.score }}</div>
                                             </td>
                                         </tr>
                                     </template>

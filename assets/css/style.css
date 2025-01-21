@@ -45,6 +45,15 @@ body {
   margin: 10px;
 }
 
+.bgbox3 {
+  padding: 20px;
+  padding-bottom: 100px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+
 .bgbox4 {
   padding: 5px 20px;
   -webkit-border-radius: 12px;
