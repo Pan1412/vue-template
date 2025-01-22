@@ -148,8 +148,8 @@ export default {
                     headName: 'เมนูหลัก',
                     subMenu: [
                         { subMenuName: 'รายชื่อนักเรียน', link: '/admin', icon: 'material-symbols:list-alt-check-outline', permission: '' },
-                        { subMenuName: 'บันทึกคดี/พิพาท', link: '/admin/manage', icon: 'hugeicons:justice-scale-01', permission: '' },
-                        { subMenuName: 'รายการพฤติกรรม', link: '/admin/list', icon: 'uis:layer-group', permission: '' },
+                        { subMenuName: 'บันทึกคดี/พิพาท', link: '/admin/manage', icon: 'hugeicons:justice-scale-01', permission: 'admin' },
+                        { subMenuName: 'รายการพฤติกรรม', link: '/admin/list', icon: 'uis:layer-group', permission: 'admin' },
                     ]
                 },
                 {
@@ -188,14 +188,14 @@ export default {
 
     async mounted() {
         this.menu = this.listMenuCheck
-        // this.profile.prefixTea = this.getStore().setAuth().prefix_name
-        // this.profile.firstName = this.getStore().setAuth().first_name
-        // this.profile.lastName = this.getStore().setAuth().last_name
-        // this.profile.groupName = this.getStore().setAuth().group_name
-        // this.profile.roll = this.getStore().setAuth().roll
+        this.profile.prefixTea = this.getStore().setAuth().prefix_name
+        this.profile.firstName = this.getStore().setAuth().first_name
+        this.profile.lastName = this.getStore().setAuth().last_name
+        this.profile.groupName = this.getStore().setAuth().group_name
+        this.profile.roll = this.getStore().setAuth().roll
 
-        // await this.getImgProfile()
-        // this.switchTab('check', 0)
+        await this.getImgProfile()
+        this.switchTab('check', 0)
     },
     methods: {
         tranformNavSlideOpen() {

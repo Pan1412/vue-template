@@ -225,7 +225,10 @@ const globalMixin = {
         },
 
         goBack(){
+            console.log("asdsad");
+            
             let roll = this.getStore().setAuth().roll
+            console.log(roll);
             window.location.href = `${this.$config.public.baseMainURL}${roll == 'student' ? roll : 'teacher'}/menu`
         }
 

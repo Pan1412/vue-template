@@ -4,36 +4,42 @@
       <div class="block-main">
         <div class="block-bg-main">
           <div class="row">
-            <div class="col bgbox2">
+            <div class="col bgbox3">
 
               <div class="section-header">
                 <h4>บันทึกคดี/พิพาท</h4>
-                <button class="btn btn-success btn-sm" @click="openModal('behavior')">เพิ่ม</button>
+                <button class="btn btn-success btn-sm" @click="openModal('behavior')"> <Icon name="material-symbols:add-rounded"
+                  style="padding: 0 0; margin: 0 0; font-size: 1.2rem;" class="fm-kanit" />
+                  เพิ่ม</button>
               </div>
-              <div align="right"></div>
+              <div align="right">
+                
+              </div>
               <div class="mt-2">
                 <div class="table-responsive mt-3">
                   <div v-if="listDetailTypeBehaviour.length > 0">
                     <table class="table table-hover fm-IBM">
                       <thead>
                         <tr>
-                          <th>#</th>
-                          <th style="text-align: left;">รายการความประพฤติ</th>
+                          <th>วันที่</th>
+                          <th style="text-align: left;">รายการคดี/พิพาท</th>
                           <th></th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="(item, index) in listDetailTypeBehaviour" :key="item.id">
-                          <td>{{ index + 1 }}</td>
+                          <td>{{ item.details[0].created_at }}</td>
                           <td>{{ item.details[0].name_beh }}</td>
-                          <td>
+                          <td class="text-nowrap" style="width: 1%;">
                             <button class="btn btn-warning btn-sm"
-                              @click="openModalForEdit(item)">รายละเอียด</button>
+                              @click="openModalForEdit(item)"><Icon name="material-symbols-light:list-alt-outline"
+                              style="padding: 0 0; margin: 0 0; font-size: 1.2rem;" class="fm-kanit" /> รายละเอียด</button>
                           </td>
-                          <td>
+                          <td class="text-nowrap" style="width: 1%;">
                             <button class="btn btn-danger btn-sm"
-                              @click="deleteDeatilOneBehaviour(item.main_id)">ลบ</button>
+                              @click="deleteDeatilOneBehaviour(item.main_id)"><Icon name="material-symbols:delete-outline"
+                              style="padding: 0 0; margin: 0 0; font-size: 1.2rem;" class="fm-kanit" /> ลบ</button>
                           </td>
                         </tr>
                       </tbody>
@@ -41,7 +47,7 @@
                   </div>
                   <div v-else>
                     <div class="text-center mt-3">
-                      <p>ไม่พบรายการความประพฤติ</p>
+                      <p>ไม่พบรายการคดี/พิพาท</p>
                     </div>
                   </div>
                 </div>
@@ -55,38 +61,35 @@
     <!-- สำหรับเพิ่มข้อมูลใหม่ -->
     <div v-if="isModalOpen" class="modal-overlay">
       <div class="modal-show">
-        <h3 class="text-left">
-          {{ isEditing ? "รายละเอียดความประพฤติ" : "บันทึกความประพฤติ" }}
-        </h3>
-        <h5 v-if="isEditing" style="color: red">
-          ***ไม่สามารถเปลี่ยนเเปลงข้อมูลส่วนนักเรียนได้***
-        </h5>
+        <h3 class="text-left">{{ isEditing ? 'รายละเอียดความประพฤติ' : 'บันทึกความประพฤติ' }}</h3>
         <form @submit.prevent="saveDetailBehaviorAndDeductBehaviorScore">
+
           <div class="mb-3">
-            <label for="studentId" class="form-label">ชื่อความประพฤติ</label>
-            <input type="text" class="form-control" placeholder="กรอกชื่อ" required
-              v-model="form.details[0].name_beh" />
-            <label for="studentId" class="form-label">วันที่</label>
-            <input type="date" class="form-control" placeholder="กรอกชื่อ" required v-model="form.date" />
-            <label for="studentId" class="form-label">เลขประจำตัวนักเรียน</label>
-            <input type="text" class="form-control" id="studentId" v-model="studentId"
+
+            <div class="row">
+                <div class="col-md-8">
+                <label for="studentId" class="form-label">ชื่อความประพฤติ</label>
+                <input type="text" class="form-control fm-IBM" placeholder="กรอกชื่อ" required
+                  v-model="form.details[0].name_beh" />
+                </div>
+                <div class="col-md-4">
+                <label for="studentId" class="form-label">วันที่</label>
+                <input type="date" class="form-control" required v-model="form.date" />
+                </div>
+            </div>
+
+            <label for="studentId" class="form-label mt-2">เลขประจำตัวนักเรียน</label>
+            <input type="text" class="form-control fm-IBM" id="studentId" v-model="studentId"
               placeholder="กรอกเลขประจำตัวนักเรียน" />
             <div v-if="isEditing">
-              <button
-                type="button"
-                class="btn btn-primary mt-2 disabled"
-                @click="searchStudent"
-              >
-                ค้นหา
-              </button>
+              <button type="button" class="btn btn-primary mt-2 disabled" @click="searchStudent">ค้นหา</button>
             </div>
             <div v-if="!isEditing">
-              <button type="button" class="btn btn-primary mt-2" @click="searchStudent">
-                ค้นหา
-              </button>
+              <button type="button" class="btn btn-primary mt-2" @click="searchStudent">ค้นหา</button>
             </div>
           </div>
           <h5>รายการนักเรียนที่ค้นหาได้:</h5>
+          <h5 v-if="isEditing" style="color: red;">***ไม่สามารถเปลี่ยนเเปลงข้อมูลส่วนนักเรียนได้***</h5>
           <div v-if="listStudents.length" class="mt-3 scrollable-table">
             <table class="table table-striped fm-IBM">
               <thead>
@@ -112,17 +115,10 @@
                   <td>{{ student.score }}</td>
                   <td>
                     <div v-if="isEditing">
-                      <button
-                        class="btn btn-danger btn-sm disabled"
-                        @click="removeStudent(index)"
-                      >
-                        ลบ
-                      </button>
+                      <button class="btn btn-danger btn-sm disabled" @click="removeStudent(index)">ลบ</button>
                     </div>
                     <div v-if="!isEditing">
-                      <button class="btn btn-danger btn-sm" @click="removeStudent(index)">
-                        ลบ
-                      </button>
+                      <button class="btn btn-danger btn-sm" @click="removeStudent(index)">ลบ</button>
                     </div>
                   </td>
                 </tr>
@@ -132,60 +128,42 @@
 
           <div class="mb-3">
             <label for="deductionScore" class="form-label">คะแนนที่จะทำการหัก</label>
-            <input type="number" class="form-control" id="score" v-model="deductionScore" required />
+            <input type="number" class="form-control fm-IBM" id="score" v-model="deductionScore" required />
           </div>
           <div class="mb-3">
             <label for="incidentNote" class="form-label">บันทึกเหตุการณ์</label>
-            <textarea class="form-control" id="incidentNote" rows="4" v-model="incidentNote"
+            <textarea class="form-control fm-IBM" id="incidentNote" rows="4" v-model="incidentNote"
               placeholder="กรอกเหตุการณ์ที่ต้องการบันทึก"></textarea>
           </div>
 
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">อัปโหลดรูปภาพ (สูงสุด 5 รูป)</label>
-            <input
-              type="file"
-              class="form-control"
-              accept="image/*"
-              multiple
-              @change="addFilePhoto"
-            />
+            <input type="file" class="form-control" accept="image/*" multiple @change="addFilePhoto" />
             <div class="mt-3 row">
-              <div
-                class="col-md-3 mb-2"
-                v-for="(file, index) in previewImages"
-                :key="index"
-              >
+              <div class="col-md-3 mb-2" v-for="(file, index) in previewImages" :key="index">
                 <div class="preview-container">
                   <img :src="file" alt="Preview" class="img-thumbnail" />
-                  <button
-                    type="button"
-                    class="btn btn-danger btn-sm mt-2 w-100"
-                    @click="removePhoto(index)"
-                  >
+                  <button type="button" class="btn btn-danger btn-sm mt-2 w-100" @click="removePhoto(index)">
                     ลบ
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
+
           <div class="d-flex justify-content-between">
             <div v-if="isEditing">
-              <button type="submit" class="btn btn-success disabled">
-                {{ isEditing ? "บันทึกการแก้ไข" : "บันทึกข้อมูล" }}
-              </button>
+              <button type="submit" class="btn btn-success disabled">{{ isEditing ? 'บันทึกการแก้ไข' : 'บันทึกข้อมูล' }}</button>
             </div>
             <div v-if="!isEditing">
-              <button type="submit" class="btn btn-success">
-                {{ isEditing ? "บันทึกการแก้ไข" : "บันทึกข้อมูล" }}
-              </button>
+              <button type="submit" class="btn btn-success">{{ isEditing ? 'บันทึกการแก้ไข' : 'บันทึกข้อมูล' }}</button>
             </div>
-            <button type="button" class="btn btn-secondary" @click="closeModal">
-              ปิด
-            </button>
+            <button type="button" class="btn btn-secondary" @click="closeModal">ปิด</button>
           </div>
         </form>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -242,6 +220,14 @@ export default {
             this.listDetailTypeBehaviour = res.result;
           } else {
             this.listDetailTypeBehaviour = res.result;
+            for (const result of this.listDetailTypeBehaviour) {
+              let details = result.details
+              for (const d of details) {
+                  console.log(d);
+
+                  d.created_at = moment(d.created_at).format('DD/MM/YYYY')
+                }
+            }
           }
         })
         .catch((err) => {
@@ -516,7 +502,7 @@ export default {
               formData.append(`images[${index + 1}]`, file);
             });
           }
-          res = await callApi.uploadPhotoFiles(this.files);
+          // res = await callApi.uploadPhotoFiles(this.files);
 
           res = await callApi.saveDetailBehaviorAndDeductBehaviorScore(formData);
         }
@@ -573,15 +559,18 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden; /* ป้องกันการเลื่อนของพื้นหลัง */
 }
 
 .modal-show {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 70rem;
+  width: 55rem;
+  max-height: 80vh; /* กำหนดความสูงสูงสุด */
+  overflow-y: auto; /* เปิดการ scroll เมื่อเนื้อหาเกินขนาด */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  margin-top: 2rem;
+  margin-top: 4rem;
 }
 
 .scrollable-table {
@@ -595,6 +584,21 @@ export default {
   align-items: center;
   margin-top:-1rem;
   margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .modal-show {
+    width: 90%; /* ปรับขนาด modal ให้เล็กลง */
+    max-height: 80vh; /* คงความสูงสูงสุดไว้ */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modal-show {
+    width: 95%; /* ใช้พื้นที่ให้เต็มจอมากขึ้น */
+    max-height: 80vh; /* ควบคุมความสูง */
+    margin-top: 2rem; /* ลดระยะห่างด้านบน */
+  }
 }
 
 </style>

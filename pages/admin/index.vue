@@ -109,8 +109,8 @@
                             :style="{
                               display: 'flex',
                               alignItems: 'center',
-                              padding: behavior.name_beh ? '0.5rem 1rem' : '0',
-                              borderRadius: '50px',
+                              padding: behavior.name_beh ? '0.5rem 0.5rem' : '0',
+                              borderRadius: '10px',
                               backgroundColor: behavior.name_beh
                                 ? behavior.type === 1
                                   ? '#e84e40'
@@ -121,21 +121,18 @@
                                   : 'gray'
                                 : 'transparent',
                               color: behavior.name_beh ? 'white' : 'black',
-                              fontSize: '0.9rem',
-                              marginTop: '0.5rem'
+                              fontSize: '0.8rem',
+                              marginTop: '0.2rem',
+                              justifyContent: 'space-between',
                             }"
                           >
-                            {{ behavior.name_beh ? behavior.name_beh : "" }}
+                            {{ behavior.name_beh ? behavior.name_beh.length >= 12 ? behavior.name_beh.substring(0, 12) + "..." : behavior.name_beh : "" }}
                             <div
                               style="padding-left: 1rem; cursor: pointer"
                               v-if="behavior.name_beh"
                               @click="deleteBehaviorInList(behavior.detail_beh_id)"
                             >
-                              <img
-                                src="/assets/image/remove.png"
-                                alt="Remove"
-                                style="width: 15px; height: 15px"
-                              />
+                            <Icon name="material-symbols:cancel" class="icon-status" />
                             </div>
                           </div>
                         </td>
@@ -144,8 +141,12 @@
                           <select
                             class="form-select form-select-sm w-100"
                             v-model="list.selectedBehavior"
+                            @focus="shortText = false"
+                            @blur="shortText = true"
                           >
-                            <option value="" disabled selected>เลือกการหักคะแนน</option>
+                          <option value="" disabled selected>
+                            {{ shortText ? 'รายการหักคะแนน...' : 'รายการหักคะแนนเเละเพิ่มคะเเนน' }}
+                          </option>
                             <optgroup label="ความประพฤติลบ">
                               <option
                                 v-for="item in listTypeBehaviour.filter(
@@ -220,6 +221,7 @@ export default {
       listTypeBehaviour: [],
       selectedBehavior: [],
       tId: 22,
+      shortText: true
     };
   },
 
@@ -419,20 +421,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-body {
-  font-family: "__font_pwks_kanit";
-  background-image: url("assets/img/bg_school.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  /* background-color: #ececec; */
-}
 
 .thead-bg {
   background-color: #e9ecef;
   color: #495057;
   border-color: #dee2e6;
   min-width: 60px;
+}
+
+th.thead-bg:last-child {
+  width: 11rem;
 }
 
 .input-width-student {
@@ -444,14 +442,13 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* สำหรับหน้าจอที่มีขนาดเล็กกว่า 768px (มือถือ, แท็บเล็ต) */
   .w-10 {
-    width: 25% !important; /* เปลี่ยนความกว้างของ label */
+    width: 25% !important;
   }
 
   .form-control,
   .form-select {
-    width: 100% !important; /* ทำให้ input และ select ขยายเต็มความกว้าง */
+    width: 100% !important;
   }
 
   .btn {

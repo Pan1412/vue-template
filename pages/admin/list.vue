@@ -255,6 +255,7 @@ export default {
           type: this.formType === "behavior" ? 1 : 2,
           score: this.form.score,
         };
+
         this.alertModal("loading", "กรุณารอสักครู่....");
         const response = await apiMethod(payload);
 

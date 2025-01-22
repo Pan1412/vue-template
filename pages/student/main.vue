@@ -25,19 +25,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-if="score === 100">
-                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ
-                                        </td>
+                                    <tr v-if="behaviorDetails.length === 0">
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูลการหักคะเเนนความประพฤติ</td>
                                     </tr>
                                     <template v-else>
                                         <tr v-for="(behavior, index) in behaviorDetails" :key="index">
                                             <td>{{ index + 1 }}</td>
                                             <td><div class="p-link-target">{{ formatDate(behavior.created_at) }}</div></td>
+                                            <td><b class="behavior-name">{{ truncateText(behavior.name_beh, 35) }}</b></td>
                                             <td>
-                                                <b>{{ behavior.name_beh }}</b>
-                                            </td>
-                                            <td>
-                                                <div class="p-link-target">{{ behavior.score }}</div>
+                                                <div class="p-link-target"
+                                                    :class="{
+                                                        'text-red': behavior.type === 1,
+                                                        'text-green': behavior.type === 2,
+                                                        'text-purple': behavior.type === 3
+                                                    }"
+                                                    :style="behavior.type === 2 ? 'padding: 0.4rem;' : ''">
+                                                    {{ behavior.type === 1 || behavior.type === 3 ? '-' : '' }}{{ behavior.score }}
+                                                </div>
                                             </td>
                                         </tr>
                                     </template>
@@ -110,13 +115,22 @@ export default {
                 const res = await callApi.getTypeDetailBehaviorStudent(data);
                 if (res.code === 0) {
                     this.behaviorDetails = res.data;
+                    console.log(this.behaviorDetails);
+                    
                 } else {
                     console.log('ไม่พบข้อมูล');
                 }
             } catch (err) {
                 console.error('เกิดข้อผิดพลาด:', err);
             }
-        }
+        },
+
+        truncateText(text, length) {
+                if (text.length > length) {
+                    return text.substring(0, length) + "\n" + text.substring(length);
+                }
+                return text;
+            }
     }
 }
 </script>
@@ -142,6 +156,25 @@ export default {
         flex: 0 0 50%;
         padding-left: 1rem;
     }
+}
+
+.text-red {
+    color: red;
+}
+
+.text-green {
+    color: green;
+}
+
+.text-purple {
+    color: purple;
+}
+
+.behavior-name {
+    max-width: 150px; /* หรือกำหนดค่าที่เหมาะสม */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 @media (max-width: 768px) {

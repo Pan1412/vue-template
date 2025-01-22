@@ -5,6 +5,10 @@ export default {
         return axios.api.post('/auth/get-info-club', data).then(response => response.data);
     },
 
+    getProfile: data => {
+        return axios.api.post('/teacher/profile', data).then(response => response.data);
+    },
+
     gettypeBehaviorStudent: () => {
         return axios.api.get('/behavior/get-type-behavior').then(response => response.data);
     },
@@ -83,7 +87,7 @@ export default {
     deleteBehaviorInList: (data) => {
         return axios.api.post('/behavior/remove-behavior-in-list', data).then((response) => response.data);
     },
-    uploadPhotoFiles: (data) => {
-        return axios.post('http://localhost:8000/api/v1/upload/upload-file', data).then((response) => response.data);
-    }    
+    // uploadPhotoFiles: (data) => {
+    //     return axios.post('http://localhost:8000/api/v1/upload/upload-file', data).then((response) => response.data);
+    // }    
 }

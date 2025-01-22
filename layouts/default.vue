@@ -11,7 +11,7 @@
             <nav class="navbar fixed-top bg-body-tertiary">
                 <div class="container-fluid fm-kanit">
                     <div class="color_per fw-500">{{ hTitle }}</div>
-                    <div><a class="color_per" href="#">
+                    <div ><a class="color_per" style="text-decoration: none !important;" @click="goBack()">
                             <Icon name="material-symbols:arrow-back-2" style="font-size: 1.4rem;" />กลับหน้าเมนูหลัก
                         </a></div>
                 </div>
@@ -35,7 +35,7 @@
             <NavBarHeader v-if="!checkPrint" />
 
             <div class="position-box-main">
-                <div v-if="checkLogin && this.getStore().setCheckSideMenu() && !checkPrint && checkDevice() !== 'mobile'">
+                <div v-if="checkLogin && this.getStore().setCheckSideMenu()">
                     <SubMenuNav />
                 </div>
 
