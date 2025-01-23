@@ -145,7 +145,7 @@
                             @blur="shortText = true"
                           >
                           <option value="" disabled selected>
-                            {{ shortText ? 'รายการหักคะแนน...' : 'รายการหักคะแนนเเละเพิ่มคะเเนน' }}
+                            {{ shortText ? 'รายการหักคะแนน...' : 'รายการหักคะแนน' }}
                           </option>
                             <optgroup label="ความประพฤติลบ">
                               <option
@@ -158,7 +158,7 @@
                                 {{ item.name_beh }}
                               </option>
                             </optgroup>
-                            <optgroup label="ความประพฤติบวก">
+                            <!-- <optgroup label="ความประพฤติบวก">
                               <option
                                 v-for="item in listTypeBehaviour.filter(
                                   (item) => item.type === 2
@@ -168,7 +168,7 @@
                               >
                                 {{ item.name_beh }}
                               </option>
-                            </optgroup>
+                            </optgroup> -->
                           </select>
                         </td>
                       </tr>
@@ -362,6 +362,15 @@ export default {
             const result = await callApi.insertDetailsTypeBehaviorScore(data);
 
             if (result.code === 0) {
+              // const checkRoll = this.getStore().setAuth().roll;
+              // console.log("teacher roll:", checkRoll);
+              // console.log("dataSearch:", this.dataSearch);
+              // if (this.dataSearch?.class && this.dataSearch?.room) {
+              //   const queryStringTeacher = `/teacher/main`;
+              //   console.log("queryString:", queryStringTeacher);
+              //   window.location.href = queryStringTeacher;
+              // } 
+
               setTimeout(() => {
                 this.alertModal(
                   "success",
@@ -369,8 +378,9 @@ export default {
                   "ทำการบันทึกคะเเนนความประพฤติสำเร็จ",
                   true
                 );
-                const queryString = `/admin/?classSearch=${this.dataSearch.class}&roomSearch=${this.dataSearch.room}`;
-                window.location.href = queryString;
+                // const queryStringTeacher = `/pbehavior/teacher/?classSearch=${this.dataSearch.class}&roomSearch=${this.dataSearch.room}`;
+                const queryStringTeacher = `/pbehavior/teacher/main`;
+                window.location.href = queryStringTeacher;
               }, 500);
             } else {
               throw new Error("Failed to insert behavior details");
