@@ -62,14 +62,11 @@
                                         placeholder="กรอกชื่อนักเรียน" aria-label="Username" aria-describedby="basic-addon1"> -->
                 </div>
                 <div class="col-auto">
-                  <button
-                    class="btn btn-primary fm-kanit"
-                    @click="searchStudent"
-                  > <Icon name="mingcute:search-2-line" class="icon-status" />
+                  <button class="btn btn-primary fm-kanit" @click="searchStudent">
+                    <Icon name="mingcute:search-2-line" class="icon-status" />
                     ค้นหา
                   </button>
                 </div>
-
               </div>
 
               <div class="mt-2">
@@ -103,7 +100,7 @@
                         <td class="d-none d-sm-table-cell">{{ list.student_num }}</td>
                         <td>{{ list.student_score }}</td>
                         <td>
-                          <div 
+                          <div
                             v-for="(behavior, index) in list.detail_behaviors"
                             :key="behavior.detail_beh_id"
                             :style="{
@@ -126,13 +123,19 @@
                               justifyContent: 'space-between',
                             }"
                           >
-                            {{ behavior.name_beh ? behavior.name_beh.length >= 12 ? behavior.name_beh.substring(0, 12) + "..." : behavior.name_beh : "" }}
+                            {{
+                              behavior.name_beh
+                                ? behavior.name_beh.length >= 12
+                                  ? behavior.name_beh.substring(0, 12) + "..."
+                                  : behavior.name_beh
+                                : ""
+                            }}
                             <div
                               style="padding-left: 1rem; cursor: pointer"
                               v-if="behavior.name_beh"
                               @click="deleteBehaviorInList(behavior.detail_beh_id)"
                             >
-                            <Icon name="material-symbols:cancel" class="icon-status" />
+                              <Icon name="material-symbols:cancel" class="icon-status" />
                             </div>
                           </div>
                         </td>
@@ -144,9 +147,13 @@
                             @focus="shortText = false"
                             @blur="shortText = true"
                           >
-                          <option value="" disabled selected>
-                            {{ shortText ? 'รายการหักคะแนน...' : 'รายการหักคะแนนเเละเพิ่มคะเเนน' }}
-                          </option>
+                            <option value="" disabled selected>
+                              {{
+                                shortText
+                                  ? "รายการหักคะแนน..."
+                                  : "รายการหักคะแนนเเละเพิ่มคะเเนน"
+                              }}
+                            </option>
                             <optgroup label="ความประพฤติลบ">
                               <option
                                 v-for="item in listTypeBehaviour.filter(
@@ -188,7 +195,7 @@
             </div>
           </div>
         </div>
-        <br><br><br>
+        <br /><br /><br />
       </div>
     </div>
   </div>
@@ -221,7 +228,7 @@ export default {
       listTypeBehaviour: [],
       selectedBehavior: [],
       tId: 22,
-      shortText: true
+      shortText: true,
     };
   },
 
@@ -247,6 +254,8 @@ export default {
       tId: this.tId,
     };
 
+    // if (this.$route.query.classSearch) this.classSearch = this.$route.query.classSearch;
+    // if (this.$route.query.roomSearch) this.roomSearch = this.$route.query.roomSearch;
     await this.searchStudent();
 
     await this.getDaTaTypeBehaviour();
@@ -281,6 +290,7 @@ export default {
       this.dataSearch.date = this.dateSearch;
       this.dataSearch.name = this.nameSearch || "";
       this.dataSearch.tId = this.tId;
+
       try {
         const res = await callApi.getStudentForBehaviorScore({ ...this.dataSearch });
         this.listStudent = res.result.map((student) => ({
@@ -363,14 +373,25 @@ export default {
 
             if (result.code === 0) {
               setTimeout(() => {
-                this.alertModal(
+                let check = this.alertModal(
                   "success",
                   "สำเร็จ",
-                  "ทำการบันทึกคะเเนนความประพฤติสำเร็จ",
-                  true
+                  "บันทึกข้อมูลสำเร็จ",
+                  true,
+                  false
                 );
-                const queryString = `/admin/?classSearch=${this.dataSearch.class}&roomSearch=${this.dataSearch.room}`;
-                window.location.href = queryString;
+
+                if (check) {
+                  setTimeout(() => {
+                    this.$router.replace({
+                      path: "/admin/",
+                      query: {
+                        classSearch: this.dataSearch.class,
+                        roomSearch: this.dataSearch.room,
+                      },
+                    });
+                  }, 200);
+                }
               }, 500);
             } else {
               throw new Error("Failed to insert behavior details");
@@ -421,7 +442,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .thead-bg {
   background-color: #e9ecef;
   color: #495057;

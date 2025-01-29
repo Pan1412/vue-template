@@ -129,12 +129,12 @@ export default {
         return {}
     },
     props: {
-        clickOpenSubMenu: {
-            type: Function
-        },
-        clickCloseSubMenu: {
-            type: Function
-        },
+        // clickOpenSubMenu: {
+        //     type: Function
+        // },
+        // clickCloseSubMenu: {
+        //     type: Function
+        // },
         openSubMenu: {
             type: Boolean,
             default: false
@@ -263,7 +263,7 @@ export default {
         },
         nextPage(link) {
             this.gotoPage(link)
-            this.clickCloseSubMenu()
+            this.clickOpenSubMenu()
         },
 
         closeModal() {
@@ -302,7 +302,20 @@ export default {
 
             }
 
-        }
+        },
+
+        clickOpenSubMenu() {
+            let check = this.getStore().setCheckSideMenu()
+            if(this.checkDevice() ==='desktop') {
+               return
+            }
+
+            if(check){
+                this.getStore().setCheckSideMenu(false)
+            }else{
+                this.getStore().setCheckSideMenu(true)
+            }
+        },
 
     },
 }

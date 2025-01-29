@@ -105,6 +105,16 @@ export default {
             await this.getInfoUser(username, roll)
         }
 
+        if(this.checkDevice() ==='mobile') {
+            if( window.location.reload) {
+                this.getStore().setCheckSideMenu(false);
+            }
+        }
+
+        if(this.checkDevice() ==='desktop') {
+            this.getStore().setCheckSideMenu(true)
+        }
+
         if (this.getStore().setAuth()) {
             if (this.getStore().setAuth().roll == 'student') {
 

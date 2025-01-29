@@ -362,25 +362,26 @@ export default {
             const result = await callApi.insertDetailsTypeBehaviorScore(data);
 
             if (result.code === 0) {
-              // const checkRoll = this.getStore().setAuth().roll;
-              // console.log("teacher roll:", checkRoll);
-              // console.log("dataSearch:", this.dataSearch);
-              // if (this.dataSearch?.class && this.dataSearch?.room) {
-              //   const queryStringTeacher = `/teacher/main`;
-              //   console.log("queryString:", queryStringTeacher);
-              //   window.location.href = queryStringTeacher;
-              // } 
-
               setTimeout(() => {
-                this.alertModal(
+                let check = this.alertModal(
                   "success",
                   "สำเร็จ",
-                  "ทำการบันทึกคะเเนนความประพฤติสำเร็จ",
-                  true
+                  "บันทึกข้อมูลสำเร็จ",
+                  true,
+                  false
                 );
-                // const queryStringTeacher = `/pbehavior/teacher/?classSearch=${this.dataSearch.class}&roomSearch=${this.dataSearch.room}`;
-                const queryStringTeacher = `/pbehavior/teacher/main`;
-                window.location.href = queryStringTeacher;
+
+                if (check) {
+                  setTimeout(() => {
+                    this.$router.replace({
+                      path: "/teacher/main/",
+                      query: {
+                        classSearch: this.dataSearch.class,
+                        roomSearch: this.dataSearch.room,
+                      },
+                    });
+                  }, 200);
+                }
               }, 500);
             } else {
               throw new Error("Failed to insert behavior details");
