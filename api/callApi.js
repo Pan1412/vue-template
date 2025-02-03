@@ -89,5 +89,9 @@ export default {
     },
     // uploadPhotoFiles: (data) => {
     //     return axios.post('http://localhost:8000/api/v1/upload/upload-file', data).then((response) => response.data);
-    // }    
+    // }
+
+    searchOneStudent: (data) => {
+        return axios.api.post('/behavior/get-search-one-student', data).then(response => response.data);
+    },
 }

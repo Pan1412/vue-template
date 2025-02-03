@@ -155,7 +155,7 @@ export default {
                 {
                     headName: 'รายงาน',
                     subMenu: [
-                        { subMenuName: 'พฤติกรรมรายบุคคล', link: '/', icon: 'mdi:file', permission: '' },
+                        { subMenuName: 'พฤติกรรมรายบุคคล', link: '/admin/individual-Behavior', icon: 'mdi:file', permission: '' },
                         { subMenuName: 'ลำดับคะแนน', link: '/', icon: 'mdi:file', permission: '' },
                     ]
                 },

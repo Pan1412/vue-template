@@ -31,7 +31,7 @@
                                     <template v-else>
                                         <tr v-for="(behavior, index) in behaviorDetails" :key="index">
                                             <td>{{ index + 1 }}</td>
-                                            <td><div class="p-link-target">{{ formatDate(behavior.created_at) }}</div></td>
+                                            <td><div class="p-link-target">{{ formatDate(behavior.date) }}</div></td>
                                             <td><b class="behavior-name">{{ truncateText(behavior.name_beh, 35) }}</b></td>
                                             <td>
                                                 <div class="p-link-target"
