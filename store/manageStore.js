@@ -7,7 +7,7 @@ const optionsState = {
 
 }
 
-const state = useLocalStorage('PWKSsBeHAVIOR', { main: optionsState })
+const state = useLocalStorage('PWKSsStudentInfo', { main: optionsState })
 
 export const store = {
     setAuth(payload) {

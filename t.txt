@@ -34,7 +34,7 @@
           </div>
 
           <div class="menu-scroll-container">
-            <div v-for="mainMenus in menu" :key="mainMenus.headName" class="mt-4">
+            <div v-for="mainMenus in filteredMenu" :key="mainMenus.headName" class="mt-4">
               <div class="box-head-menu fm-kanit">
                 <p class="font-head-menu" style="color: #6c757d;">{{ mainMenus.headName }}</p>
                 <div class="divider-solid mt-3"></div>
@@ -100,7 +100,7 @@ export default {
             { subMenuName: 'ผลการประเมินรายห้องเรียน', link: '/teacher/sdq-result-room', icon: 'material-symbols:demography-rounded', permission: '' },
             
 
-            { subMenuName: 'สรุปผลรายบุคคล', link: '/admin/sdq', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
+            { subMenuName: 'สรุปผลรายบุคคล', link: '/admin/sdq', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
             { subMenuName: 'สรุปผลรายห้องเรียน', link: '/admin/sdq-result-room', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
             { subMenuName: 'สรุปผลรายชั้นเรียน', link: '/admin/sdq-result-class', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
             { subMenuName: 'สรุปผลระดับโรงเรียน', link: '/admin/sdq-result-school', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
@@ -117,10 +117,10 @@ export default {
             { subMenuName: 'ผลการประเมินรายห้องเรียน', link: '/teacher/eq-result-room', icon: 'material-symbols:demography-rounded', permission: '' },
             
 
-            { subMenuName: 'สรุปผลรายบุคคล', link: '/admin/eq', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            { subMenuName: 'สรุปผลรายห้องเรียน', link: '/admin/eq-result-room', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            { subMenuName: 'สรุปผลรายชั้นเรียน', link: '/admin/eq-result-class', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            { subMenuName: 'สรุปผลระดับโรงเรียน', link: '/admin/eq-result-school', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
+            { subMenuName: 'สรุปผลรายบุคคล', link: '/admin/eq', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
+            { subMenuName: 'สรุปผลรายห้องเรียน', link: '/admin/eq-result-room', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
+            { subMenuName: 'สรุปผลรายชั้นเรียน', link: '/admin/eq-result-class', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
+            { subMenuName: 'สรุปผลระดับโรงเรียน', link: '/admin/eq-result-school', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
           ]
         },
 

@@ -8,10 +8,10 @@
         <!-- สำหรับนักเรียน -->
         <div v-if="rollCheck == 'student'" class="mainbg_1">
 
-            <nav class="navbar fixed-top bg-body-tertiary">
+            <nav class="navbar fixed-top bg-body-tertiary nav-head">
                 <div class="container-fluid fm-kanit">
                     <div class="color_per fw-500">{{ hTitle }}</div>
-                    <div ><a class="color_per" style="text-decoration: none !important;" @click="goBack()">
+                    <div><a class="color_per" style="text-decoration: none !important; cursor: pointer;" @click="goBack()">
                             <Icon name="material-symbols:arrow-back-2" style="font-size: 1.4rem;" />กลับหน้าเมนูหลัก
                         </a></div>
                 </div>
@@ -19,8 +19,31 @@
 
             <div class="" style="margin-top: 70px;">
                 <div align="center">
-                    <img src="../assets/image/header3.png" width="450" class="img-fluid">
-                    <!-- <h1 class="sriracha-font stroke text-white text-head-club">{{ title }}</h1> -->
+                    <!-- <img src="../assets/image/header3.png" width="450" class="img-fluid">
+                    <h1 class="sriracha-font stroke text-white text-head-club">{{ title }}</h1> -->
+                </div>
+            </div>
+
+            <div class="container">
+                <slot />
+            </div>
+        </div>
+
+        <div v-if="rollCheck == 'parent'" class="mainbg_1">
+
+            <!-- <nav class="navbar fixed-top bg-body-tertiary">
+                <div class="container-fluid fm-kanit">
+                    <div class="color_per fw-500">{{ hTitle }}</div>
+                    <div><a class="color_per" style="text-decoration: none !important; cursor: pointer;" @click="goBack()">
+                            <Icon name="material-symbols:arrow-back-2" style="font-size: 1.4rem;" />กลับหน้าเมนูหลัก
+                        </a></div>
+                </div>
+            </nav> -->
+
+            <div class="" style="margin-top: 70px;">
+                <div align="center">
+                    <!-- <img src="../assets/image/header3.png" width="450" class="img-fluid">
+                    <h1 class="sriracha-font stroke text-white text-head-club">{{ title }}</h1> -->
                 </div>
             </div>
 
@@ -68,31 +91,48 @@ import callApi from '../api/callApi';
 export default {
 
     setup() {
-
         return {}
     },
 
     data() {
         return {
-            titleWeb: 'PWKSs BEHAVIOR-SCORE',
+            titleWeb: 'Questionnaire',
             footerWeb: '',
             checkLogin: true,
             checkPrint: false,
             title: 'ระบบจัดการข้อมูลสำหรับครู',
-            hTitle: 'คะแนนความประพฤติ',
+            hTitle: 'แบบประเมิน SDQ และ EQ',
             subTitle: '',
             rollCheck: '',
         }
     },
 
     created() {
-
-
     },
 
     async mounted() {
+        // console.log("err")
         let checkQuery = this.$route.query
+        // console.log(this.$route.name)
+        if (this.$route.name === 'parents-Login-sdq'){
+        
+            this.getStore().setAuth({
+                roll: 'parent'
+            })
 
+            // this.titleWeb = 'ระบบรับนักเรียนโรงเรียนพร้าววิทยาคม'
+            // if (this.$route.name == 'index') {
+
+            //     window.location.href = this.$config.public.baseURL + 'student/main'
+
+            // }
+
+            this.rollCheck = 'parent'
+
+
+            return
+                
+        }
         if (this.$route.name == 'index') {
             if (!checkQuery.username || !checkQuery.roll) {
                 alert('ไม่พบผู้ใช้งาน กรุณาเข้าสู่ระบบ')
@@ -127,8 +167,6 @@ export default {
 
             this.rollCheck = this.getStore().setAuth().roll
         }
-
-
     },
     methods: {
         async getInfoUser(username, roll) {
@@ -141,9 +179,9 @@ export default {
                     if (roll == 'student') {
                         window.location.href = this.$config.public.baseURL + 'student/main'
                     } else if (roll == 'teacher') {
-                        window.location.href = this.$config.public.baseURL + 'teacher/main'
+                        window.location.href = this.$config.public.baseURL + 'teacher'
                     } else if (roll == 'admin') {
-                        window.location.href = this.$config.public.baseURL + 'admin/'
+                        window.location.href = this.$config.public.baseURL + 'teacher'
                     }
                 } else {
                     alert('ไม่พบผู้ใช้งาน กรุณาเข้าสู่ระบบ')
@@ -196,6 +234,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* ส่วนที่ทำให้หัวตารางไม่ทับกับ navbar */
+:global(table.table-fixed-header thead th) {
+    position: sticky;
+    top: 58px; /* ระยะห่างจากด้านบน ควรเท่ากับหรือมากกว่าความสูงของ navbar เล็กน้อย */
+    background-color: white; /* สีพื้นหลังของหัวตาราง */
+    z-index: 1040; /* ค่า z-index ต้องต่ำกว่า navbar แต่สูงกว่าเนื้อหาอื่น */
+    border-bottom: 1px solid #ccc; /* เส้นขอบด้านล่างของหัวตาราง */
+}
+
+/* ทำให้แน่ใจว่า navbar อยู่เหนือทุกอย่าง */
+// :global(.navbar.fixed-top) {
+//     z-index: 1050;
+// }
+
+/* สำหรับ responsive บนมือถือ */
+@media (max-width: 768px) {
+    :global(table.table-fixed-header thead th) {
+        top: 52px; /* ปรับตามความสูงของ navbar บนมือถือ */
+    }
+    
+    :global(.navbar.fixed-top) {
+        height: 50px;
+    }
+}
+.nav-head {
+    height: 50px;
+    width: 100%;
+    background-color: #222; /* เปลี่ยนพื้นหลังเป็นสีดำ */
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .2);
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+}
 .img-logo {
     width: 200px;
     height: 92px;
@@ -264,7 +336,6 @@ export default {
     background-color: rgb(106, 106, 106);
     width: 100%;
     opacity: 0.5;
-
 }
 
 .box-main-sub-nav-menu {
@@ -350,6 +421,10 @@ export default {
 @media screen and (min-width: 320px) and (max-width: 589px) {
     .mg-t-nav {
         margin-top: 36px;
+    }
+    
+    :global(table.table-fixed-header thead th) {
+        top: 46px; /* ปรับตำแหน่งให้ติดกับ navbar บนมือถือ */
     }
 }
 

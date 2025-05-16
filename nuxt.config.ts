@@ -24,7 +24,7 @@ export default defineNuxtConfig({
 
   devServer: {
     host: 'localhost',
-    port: 4550,
+    port: 4892,
   },
 
   modules: [
@@ -49,8 +49,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public:{
       baseURL: process.env.BASE_URL,
-      // baseMainURL: 'http://localhost:4530/pmain/'
-      baseMainURL: 'https://last.pwks.ac.th/pmain/'
+      baseMainURL: 'http://localhost:4530/pmain/'
+      // baseMainURL: 'https://last.pwks.ac.th/pmain/'
     }
   }
 })
