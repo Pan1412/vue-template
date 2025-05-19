@@ -1,235 +1,294 @@
 <template>
-  <div>
-    <div class="d-flex pt-5 bg-light" style="height: 100vh;">
-      <div
-        class="sub-main-box p-4 rounded shadow bg-white"
-        id="box-menu-nav"
-        style="width: 270px !important; min-width: 270px; flex: 0 0 270px; margin-top: -25px; overflow: hidden; padding-right: 0px !important;"
-      >
-        <div class="box-main-sub-nav-menu">
-          <div class="box-profile-nav mt-3 d-flex flex-column align-items-center">
-            <img
-              :src="profile.picTea"
-              v-if="profile.picTea !== ''"
-              alt="user"
-              class="box-img-profile-nav rounded-circle border"
-              style="width: 130px; height: 130px; object-fit: cover;"
-            >
-            <img
-              src="/assets/image/user-img/profile-defalut.png"
-              v-else
-              alt="user"
-              class="box-img-profile-nav ms-2 rounded-circle border"
-              style="width: 130px; height: 130px; object-fit: cover;"
-            >
-            <div class="mt-3 text-center">
-              <h6 class="h4-pwks fw-500 mb-0">
-                {{ profile.prefixTea }}{{ profile.firstName }} {{ profile.lastName }}
-              </h6>
-              <h7 class=" mt-1 mb-0 text-muted">
-                <Icon name="clarity:group-solid" style="font-size: 1rem; margin-top: -2px;" />
-                {{ profile.groupName === 'ไม่ระบุ' ? 'ผู้บริหาร' : profile.groupName }}
-              </h7>
-            </div>
-          </div>
-
-          <div class="menu-scroll-container">
-            <div v-for="mainMenus in filteredMenu" :key="mainMenus.headName" class="mt-4">
-              <div class="box-head-menu fm-kanit">
-                <p class="font-head-menu" style="color: #6c757d;">{{ mainMenus.headName }}</p>
-                <div class="divider-solid mt-3"></div>
-              </div>
-
-              <div class="grid-nav-sub-menu grid-column-sub-menu mt-1">
-                <template v-for="subMenu in mainMenus.subMenu" :key="subMenu.subMenuName">
-                  <template v-if="!subMenu.multi">
-                    <div class="box-menu mt-2" v-if="subMenu.permission === profile.roll || subMenu.permission === ''">
-                      <div class="d-flex cursor-main size-menu align-items-center hover-text" @click="nextPage(subMenu.link)">
-                        <Icon :name="subMenu.icon" class="ms-3" style="font-size: 1.3rem;" />
-                        <h6 class="h5-pwks fw-500 ms-2 mt-1" style="font-size: 0.9rem; margin: 0; padding: 0;">
-                          {{ subMenu.subMenuName }}
-                        </h6>
-                      </div>
-                    </div>
-                  </template>
-
-                  <template v-else>
-                    <div class="row g-2">
-                      <div class="col-6" v-for="multi in subMenu.multi" :key="multi.subMenuName">
-                        <div class="box-menu-multi" v-if="multi.permission === profile.roll || multi.permission === ''">
-                          <div class="d-flex cursor-main size-menu align-items-center" @click="nextPage(multi.link)">
-                            <Icon :name="multi.icon" class="ms-3" style="font-size: 1.3rem;" />
-                            <h6 class="h5-pwks fw-500 ms-2 mt-1" style="font-size: 0.9rem; margin: 0; padding: 0;">
-                              {{ multi.subMenuName }}
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </template>
-                </template>
-              </div>
-            </div>
-          </div>
+  <div class="container mt-4 p-4 mb-5 bg-white shadow rounded">
+    <h2 class="text-center fs-3">แบบประเมินจุดแข็งและจุดอ่อน</h2>
+    <h5 class="text-center fs-4">Strengths and Difficulties Questionnaire (SDQ)</h5>
+    <p class="text-center fs-6">
+      เลือกคำตอบ ไม่จริง จริงบ้าง จริงแน่นอน เพียงตัวเลือกเดียวในแต่ละข้อคำถาม
+      กรุณาตอบทุกข้อให้ใกล้เคียงความเป็นจริงที่เกิดขึ้นในช่วง 6 เดือนที่ผ่านมา หรือในช่วงปีการศึกษานี้
+    </p>
+    
+    <div class="text-center mt-4 mb-4" style="color: purple;">
+        <h4 class="d-inline me-3">{{ studentInfo.prefix_stu }} {{ studentInfo.name_stu }} {{ studentInfo.surname_stu }}</h4>
+        <h4 v-if="studentInfo.class?.toLowerCase() === 'vc'" class="d-inline me-3">ระดับชั้น: ปวช.{{ studentInfo.room }}</h4>
+        <h4 v-else class="d-inline me-3">ระดับชั้น: ม.{{ studentInfo.class }}/{{ studentInfo.room }}</h4>
+        <h4 class="d-inline me-3 ">  เลขที่: {{ studentInfo.student_num }}</h4>
+        <h4 class="d-inline me-3">รหัสนักเรียน: {{ studentInfo.id_school }}</h4>
         </div>
-      </div>
+  
+
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover table-fixed-header">
+        <thead class="table-light text-center fm-kanit">
+          <tr>
+            <th class=" fs-5">คำถาม</th>
+            <th class="fs-5">ไม่จริง</th>
+            <th class="fs-5">จริงบ้าง</th>
+            <th class="fs-5">จริงแน่นอน</th>
+          </tr>
+        </thead>
+        <tbody class="fm-IBM">
+          <tr v-for="q in questions" :key="q.id">
+            <td class="text-start fs-5">{{ q.id }}. {{ q.text }}</td>
+            <td class="text-center centerButton" >
+              <label class="container2 ">
+              <input type="radio" :name="'q' + q.id" :value="q.values[0]" v-model="q.value">
+              <span class="checkmark"></span>
+              </label>
+            </td>
+            <td class="text-center centerButton">
+              <label class="container2 ">
+              <input type="radio" :name="'q' + q.id" :value="q.values[1]" v-model="q.value">
+              <span class="checkmark"></span>
+              </label>
+            </td>
+            <td class="text-center centerButton">
+              <label class="container2 ">
+              <input type="radio" :name="'q' + q.id" :value="q.values[2]" v-model="q.value">
+              <span class="checkmark"></span>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mb-3">
+      <label for="additionalComment" class="form-label fs-5">โปรดกรอกเพิ่มเติมถ้าคุณมีความคิดเห็นอื่น:</label>
+      <textarea id="additionalComment" v-model="additionalComment" class="form-control" rows="3" placeholder="กรอกความคิดเห็นของคุณที่นี่(ถ้ามี)"></textarea>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3">
+      <button class="btn btn-primary fs-5" @click="submitForm">ส่งคำตอบ</button>
+      <button class="btn btn-secondary fs-5" @click="cancelForm">ยกเลิก</button>
+      
+    </div>
+
+    <div v-if="formSubmitted" class="alert alert-success mt-3 text-center">
+      <h3 class="fs-4">บันทึกสำเร็จ</h3>
     </div>
   </div>
 </template>
 
 <script>
-import callApi from '../api/callApi';
-
+import { ref } from "vue";
+import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+import dayjs from "dayjs";
+import callApi from "../api/callApi";
 export default {
-  props: {
-    openSubMenu: {
-      type: Boolean,
-      default: false
-    }
+  setup() {
+    const additionalComment = ref("");
+    const formSubmitted = ref(false);
+    return {
+      additionalComment,
+      formSubmitted,
+    };
   },
+
   data() {
     return {
-      menu: [],
-      listMenuCheck: [
-        {
-          headName: 'รายงาน SDQ',
-          permission: 'teacher',
-          subMenu: [
-            { subMenuName: 'ประเมิน SDQ', link: '/teacher', icon: 'material-symbols:list-alt-check-rounded', permission: '' },
-            { subMenuName: 'ผลการประเมินรายบุคคล', link: '/teacher/sdq', icon: 'material-symbols:demography-rounded', permission: '' },
-            { subMenuName: 'ผลการประเมินรายห้องเรียน', link: '/teacher/sdq-result-room', icon: 'material-symbols:demography-rounded', permission: '' },
-            
-
-            { subMenuName: 'สรุปผลรายบุคคล', link: '/admin/sdq', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
-            { subMenuName: 'สรุปผลรายห้องเรียน', link: '/admin/sdq-result-room', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            { subMenuName: 'สรุปผลรายชั้นเรียน', link: '/admin/sdq-result-class', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            { subMenuName: 'สรุปผลระดับโรงเรียน', link: '/admin/sdq-result-school', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            { subMenuName: 'สรุปรายงานปัญหานักเรียน', link: '/admin/report-problem', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: 'admin' },
-            
-          ]
-        },
-        
-        {
-          headName: 'รายงาน EQ',
-          permission: 'teacher',
-          subMenu: [
-            { subMenuName: 'ผลการประเมินรายบุคคล', link: '/teacher/eq', icon: 'material-symbols:demography-rounded', permission: '' },
-            { subMenuName: 'ผลการประเมินรายห้องเรียน', link: '/teacher/eq-result-room', icon: 'material-symbols:demography-rounded', permission: '' },
-            
-
-            { subMenuName: 'สรุปผลรายบุคคล', link: '/admin/eq', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
-            { subMenuName: 'สรุปผลรายห้องเรียน', link: '/admin/eq-result-room', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
-            { subMenuName: 'สรุปผลรายชั้นเรียน', link: '/admin/eq-result-class', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
-            { subMenuName: 'สรุปผลระดับโรงเรียน', link: '/admin/eq-result-school', icon: 'material-symbols:bar-chart-4-bars-rounded', permission: '' },
-          ]
-        },
-
-      ],
-      isModal: false,
-      typeModal: '',
-      profile: {
-        idCard: '',
-        prefixTea: '',
-        firstName: '',
-        lastName: '',
-        positionKey: '',
-        groupKey: '',
-        groupName: '',
-        picTea: '',
-        roll: ''
-      },
+    questions : [
+  { id: 1, text: "ฉันพยายามทำดีต่อผู้อื่น ฉันใส่ใจความรู้สึกของผู้อื่น", values: [0, 1, 2], value: null },
+  { id: 2, text: "ฉันอยู่ไม่สุข ฉันไม่สามารถอยู่นิ่งได้นาน", values: [0, 1, 2], value: null },
+  { id: 3, text: "ฉันปวดศีรษะ ปวดท้องหรือคลื่นไส้บ่อยๆ", values: [0, 1, 2], value: null },
+  { id: 4, text: "โดยปกติแล้ว ฉันแบ่งปันกับผู้อื่น (อาหาร เกม ปากกา ฯลฯ)", values: [0, 1, 2], value: null },
+  { id: 5, text: "ฉันโกรธรุนแรงและมักควบคุมอารมณ์ไม่ได้", values: [0, 1, 2], value: null },
+  { id: 6, text: "ฉันมักอยู่กับตัวเอง ฉันมักเล่นคนเดียวหรืออยู่ตามลำพัง", values: [0, 1, 2], value: null },
+  { id: 7, text: "โดยปกติแล้ว ฉันทำตามที่คนอื่นบอก", values: [2, 1, 0], value: null },
+  { id: 8, text: "ฉันกังวลมาก", values: [0, 1, 2], value: null },
+  { id: 9, text: "ฉันช่วยเหลือ ถ้ามีใครบาดเจ็บ ไม่สบาย หรือเจ็บป่วย", values: [0, 1, 2], value: null },
+  { id: 10, text: "ฉันหยุกหยิก หรือดิ้นไปดิ้นมาตลอดเวลา", values: [0, 1, 2], value: null },
+  { id: 11, text: "ฉันมีเพื่อนสนิทอย่างน้อยคนนึง", values: [2, 1, 0], value: null },
+  { id: 12, text: "ฉันมีเรื่องต่อสู้บ่อยๆ ฉันบังคับให้ผู้อื่นทำตามที่ฉันต้องการได้", values: [0, 1, 2], value: null },
+  { id: 13, text: "ฉันมักไม่มีความสุข เศร้าหรือร้องให้บ่อย", values: [0, 1, 2], value: null },
+  { id: 14, text: "คนอื่นในวัยเดียวกับฉันมักชอบฉัน", values: [2, 1, 0], value: null },
+  { id: 15, text: "ฉันวอกแวกง่าย ฉันมีความลำบากที่จะใช้สมาธิ", values: [0, 1, 2], value: null },
+  { id: 16, text: "ฉันวิตกกังวลเมื่ออยู่ในสถานการณ์ใหม่ๆ ฉันเสียความมั่นใจง่าย", values: [0, 1, 2], value: null },
+  { id: 17, text: "ฉันใจดีกับเด็กที่อายุน้อยกว่า", values: [0, 1, 2], value: null },
+  { id: 18, text: "ฉันถูกกล่าวหาว่า พูดปดหรือขี้โกงบ่อยๆ", values: [0, 1, 2], value: null },
+  { id: 19, text: "เด็กคนอื่นๆ แกล้งหรือรังแกฉัน", values: [0, 1, 2], value: null },
+  { id: 20, text: "ฉันมักอาสาช่วยเหลือผู้อื่น (พ่อแม่ ครู เด็ก)", values: [0, 1, 2], value: null },
+  { id: 21, text: "ฉันคิดก่อนทำ", values: [2, 1, 0], value: null },
+  { id: 22, text: "ฉันเอาของที่ไม่ใช่ของฉันออกไปจากบ้าน โรงเรียนหรือที่อื่น", values: [0, 1, 2], value: null },
+  { id: 23, text: "ฉันเข้ากับผู้ใหญ่ได้ดีกว่าเข้ากับเด็กวัยเดียวกัน", values: [0, 1, 2], value: null },
+  { id: 24, text: "ฉันมีความกลัวหลายอย่าง ฉันหวาดกลัวง่าย", values: [0, 1, 2], value: null },
+  { id: 25, text: "ฉันทำงานที่ทำอยู่ได้เสร็จ ฉันมีสมาธิดี", values: [2, 1, 0], value: null },
+  ],
+    studentInfo:[]
     }
+    
   },
-  computed: {
-    // กรองเมนูตาม permission ของผู้ใช้
-    filteredMenu() {
-      return this.menu.filter(menuItem => {
-        // ถ้าเมนูไม่มี permission ให้แสดงเสมอ หรือถ้ามี permission ตรงกับ roll ของผู้ใช้จึงแสดง
-        // console.log(this.profile.roll)
-        return !menuItem.permission || menuItem.permission === this.profile.roll;
-      });
-    }
-  },
+
   async mounted() {
-    this.menu = this.listMenuCheck;
-    const auth = this.getStore().setAuth();
-    this.profile.prefixTea = auth.prefix_name;
-    this.profile.firstName = auth.first_name;
-    this.profile.lastName = auth.last_name;
-    this.profile.groupName = auth.group_name;
-    this.profile.roll = auth.roll;
-    console.log(this.profile.roll)
+    this.getStudentInfo();
+  },
 
-    await this.getImgProfile();
-    this.switchTab('check', 0);
-  },
   methods: {
-    async getImgProfile() {
-      const res = await callApi.getProfile({ t_id: this.getStore().setAuth().id });
-      this.profile.picTea = res.result.pic_tea || '';
+    async getStudentInfo(){
+      const student_id = this.$route.query.studentId;
+      await callApi
+        .getStudent({student_id})
+        .then((res) => {
+          // console.log(student_id)
+          if (res.code == 0) {
+            this.studentInfo = res.result[0];
+            // console.log(this.studentInfo.class)
+          } 
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    switchTab(type, arr, status = true) {
-      if (!status) return;
-      this.menu = this.listMenuCheck;
-    },
-    nextPage(link) {
-      this.gotoPage(link);
-      this.clickOpenSubMenu();
-    },
-    clickOpenSubMenu() {
-      if (this.checkDevice() === 'desktop') return;
-      const current = this.getStore().setCheckSideMenu();
-      this.getStore().setCheckSideMenu(!current);
-    },
-  },
+
+    async cancelForm(){
+      this.$router.push({
+        path: "/student/main"
+      });
+      },
+
+    async submitForm() {
+      const year_res = await callApi.getYear()
+      if(!year_res.result || !year_res.result.length || !year_res.result[0].year){
+        alert("เกิดข้อผิดพลาด");
+        return;
+      }
+      const year = year_res.result[0].year;
+      const id_s = this.$route.query.studentId;
+      const req ={
+          s_id: id_s,
+          year: year
+        }
+        const res = await callApi.checkStudentStatus(req)
+        if(res.result[0].sdq_status){
+          alert("ท่านได้ทำแบบประเมินนี้แล้ว");
+          return;
+        }
+      const unanswered = this.questions.some(q => q.value === null);
+
+      if (unanswered) {
+        alert("กรุณาตอบคำถามให้ครบทุกข้อ");
+        return;
+      }
+
+      
+
+      const payload = {
+        s_id: id_s,
+        additional_comments: this.additionalComment,
+        year: year,
+      };
+
+      this.questions.forEach((q, index) => {
+        payload[`Q${index + 1}`] = q.value;
+      });
+
+    try {
+        await callApi
+        .insertSdqStudent(payload)
+        .then((res) => {
+          if (res.code == 0) {
+            console.log("ส่งสำเร็จ:", res.data);
+            this.formSubmitted = true;
+            alert("บันทึกสำเร็จ");
+            this.$router.push("/student/main");
+          }
+        })
+
+        // window.location.href = "teacher";
+      } catch (error) {
+        console.error("เกิดข้อผิดพลาด:", error);
+        alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+      }
+    }
+  }
+
 }
 </script>
 
-<style lang="scss" scoped>
-#box-menu-nav {
-  width: 270px !important;
-  min-width: 270px !important;
-  max-width: 270px !important;
-  overflow: hidden; /* Keep this to hide overflow from the main container */
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500;600;700&display=swap');
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .table-responsive {
+  /* ไม่กำหนด max-height เพื่อให้ตารางมีความสูงตามเนื้อหา */
+  overflow: visible; /* ให้เนื้อหาที่ล้นออกมาแสดงผลได้ (จำเป็นสำหรับ sticky header) */
 }
-.hover-text:hover {
-  color: #6c757d !important; /* text-secondary สี Bootstrap */
+  
+  .sticky-header {
+  position: sticky;
+  top: 0; /* ติดอยู่ที่ด้านบนของหน้าจอ */
+  background-color: #f8f9fa; /* ใช้สี table-light จาก Bootstrap */
+  z-index: 1000;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
-.box-img-profile-nav {
-  border-radius: 50%;
-  object-fit: cover;
-}
-.box-main-sub-nav-menu {
-  height: calc(100vh - 80px);
+
+.container2 {
+  display: inline-block;
   position: relative;
-  overflow: auto; /* Changed from 'hidden' to 'auto' to enable scrolling */
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* For Firefox */
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.container2 input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
-/* Custom scrollbar for webkit browsers */
-.box-main-sub-nav-menu::-webkit-scrollbar {
-  width: 6px; /* Narrow scrollbar */
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
 }
 
-.box-main-sub-nav-menu::-webkit-scrollbar-track {
-  background: transparent; /* Transparent track */
-  margin-right: 2px;
+/* On mouse-over, add a grey background color */
+.container2:hover input ~ .checkmark {
+  background-color: #ccc;
 }
 
-.box-main-sub-nav-menu::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2); /* Light gray scrollbar */
-  border-radius: 10px;
+/* When the radio button is checked, add a blue background */
+.container2 input:checked ~ .checkmark {
+  background-color: #2196F3;
 }
 
-.menu-scroll-container {
-  padding-bottom: 20px; /* Add some padding at the bottom for better UX */
-  padding-right: 5px; /* Add padding to keep content away from scrollbar */
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
 }
-.sub-main-box {
-  overflow: hidden !important;
+
+/* Show the indicator (dot/circle) when checked */
+.container2 input:checked ~ .checkmark:after {
+  display: block;
 }
-.scroll-select-menu {
-  overflow: hidden !important;
+
+/* Style the indicator (dot/circle) */
+.container2 .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
 }
 </style>
