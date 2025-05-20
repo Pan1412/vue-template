@@ -1,16 +1,7 @@
 import axios from '../api/structure';
 
 export default {
-    getInfoClubUser: data => {
-        return axios.api.post('/auth/get-info-club', data).then(response => response.data);
-    },
-
-    getProfile: data => {
-        return axios.api.post('/teacher/profile', data).then(response => response.data);
-    },
-
     
-
     getAllStudent: (t_class, t_room, year)=>{
         return axios.api.get(`/sdq/teacher/getStudent?class=${t_class}&room=${t_room}&year=${year}`).then(response => response.data);
     },
